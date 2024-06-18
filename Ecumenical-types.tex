@@ -1,0 +1,62 @@
+ \documentclass{article}
+\usepackage{latexsym}
+\usepackage{amsmath,amssymb,amscd,amsthm}
+\usepackage{bussproofs}
+\usepackage{color}
+\usepackage{proof}
+\usepackage{multicol}
+\usepackage[english]{babel}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usepackage{array}
+\usepackage{float}
+
+\newcommand{\frametitleg}[1]{\frametitle{\cdarkgreen{\bf #1}}}
+
+\newcommand{\subtitol}[1]{\colorbox{gri}{\textcolor{white}{ #1}}}
+
+\newcommand{\mariana}[1]{\textcolor{purple}{#1}}
+\newenvironment{marianaenv}{\color{purple}}{\ignorespacesafterend}
+
+\input{prooftree.tex}
+\input{macros.sty}
+
+\date{\today}
+
+\title{On ecumenical types}
+\author{DRAFT}
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}\label{sec:intro}
+\input{introduction}
+
+\section{Ecumenical natural deduction system}\label{sec:ec}
+\input{prawitz}
+
+\section{Natural Deduction with \textit{stoup} ($\LEi$)}\label{sec:nd}
+\input{nd-system}
+
+\section{Reduction steps}\label{sec:red}
+\input{reductions}
+
+
+\section{Normalization}\label{sec:norm}
+%\input{normalization}
+
+\section{Term calculus proposal}\label{sec:types}
+\input{type-system}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
+

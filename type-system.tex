@@ -1,0 +1,348 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+ Ecumenical calculi should naturally mix the $\lambda_\mu$ internalization of {\em stoups} 
+ and the continuation-passing aspect of general rules. 
+ In this sense we propose an ecumenical term calculus. 
+ \red{In this first draft, we will restrict ourselves to the implicational fragment.}
+
+\subsection{Syntax and operational semantics}
+\begin{definition}[Syntax]
+Suppose given a denumerably infinite sets 
+of {\em variables} $\set{\var,\vartwo,\hdots}$ 
+and {\em names} $\set{\name,\nametwo,\hdots}$.
+The set of {\em terms} $\set{\tm,\tmtwo,\hdots}$
+and {\em commands} $\set{\ctm,\ctmtwo,\hdots}$
+of the $\lambdamulep$-calculus are defined mutually inductively as follows.
+
+\begin{marianaenv}
+Terms:
+\[
+\begin{array}{lcl}
+  \tm,\tmtwo,\tmthree 
+         & ::=  & \var                               \\
+         & \mid & \absi{\var}{\tm}                   \\
+         & \mid & \appi{\tm}{\tmtwo}{\var}{\tmthree} \\ 
+         & \mid & \absc{\var}{\name}{\ctm}           \\
+         & \mid & \appc{\tm}{\tmtwo}{\var}{\ctm}     \\
+         & \mid & \str{\ctm}
+\end{array}
+\]
+\end{marianaenv}
+
+Commands:
+\[
+\begin{array}{lcl}
+  \ctm & ::=  & \command{\name}{\tm}
+\end{array}
+\]
+
+\begin{marianaenv}
+This grammar has two constructors: $\absi{\var}{\tm}$ and $\absc{\var}{\name}{\ctm}$,
+two generalized applications: $\appi{\tm}{\tmtwo}{\var}{\tmthree}$ and $\appc{\tm}{\tmtwo}{\var}{\tmthree}$,
+and an {\em activation} operator $\str{\ctm}$.
+
+The set of {\em free} and {\em bound variables} of a term or command is defined as expected.
+The set of {\em free} and {\em bound names} of a term or command is defined as expected.
+\end{marianaenv}
+\end{definition}
+
+\begin{marianaenv}
+\subsection{Type system}
+\begin{definition}[Types]
+Suppose given a denumerably infinite set of {\em base types} $\set{\btyp, \btyptwo, \hdots}$.
+The set of {\em types} is given by the following grammar:
+\[
+\begin{array}{lcl}
+  \typ, \typtwo & ::=  & \btyp \mid \typ \iimp \typtwo \mid \typ \cimp \typtwo
+\end{array}
+\]
+\mariana{  
+Here $(\iimp)$ stands for the {\em intuitionistic} implication
+whereas $(\cimp)$ stands for the {\em classical} implication.  
+}
+\end{definition}
+
+\begin{definition}[Typing system]
+Derivability of typing judgments $\judgE{\ctx}{O}{\typ}{\stoup}$,
+where $O$ is a term or a command,
+is defined inductively by the following rules.
+\begin{figure}[htp]
+\[
+  \indrule{ax}{}{
+   \judgE{\ctx, \var : \typ}{\var}{\typ}{\stoup}
+  }
+\]
+\[
+  \indrule{I-$\iimp$}{
+    \judgE{\ctx,\var:\typ}{\tm}{\typtwo}{\stoup}
+  }{
+    \judgE{\ctx}{\absi{\var}{\tm}}{\typ \iimp \typtwo}{\stoup}
+  }
+  \HS
+  \indrule{E-$\iimp$}{
+    \judgE{\ctx}{\tm}{\typ \iimp \typtwo}{\stoup}
+    \HS
+    \judgE{\ctx}{\tmtwo}{\typ}{\stoup}
+    \HS
+    \judgE{\ctx, \var : \typtwo}{\tmthree}{\typthree}{\stoup}
+  }{
+    \judgE{\ctx}{\appi{\tm}{\tmtwo}{\var}{\tmthree}}{\typthree}{\stoup}
+  }
+\]
+\[
+%\mariana{
+  \indrule{I-$\cimp$}{
+    \judgE{\ctx,\var:\typ}{\ctm}{\bot}{\stoup \cup \set{\name : \typtwo}}
+  }{
+    \judgE{\ctx}{\absc{\var}{\name}{\ctm}}{\typ \cimp \typtwo}{\stoup}
+  }
+%}
+  \HS
+  \indrule{E-$\cimp$}{
+    \judgE{\ctx}{\tm}{\typ \cimp \typtwo}{\stoup}
+    \HS
+    \judgE{\ctx}{\tmtwo}{\typ}{\stoup}
+    \HS
+    \judgE{\ctx, \var : \typtwo}{\ctm}{\bot}{\stoup}
+  }{
+    \judgE{\ctx}{\appc{\tm}{\tmtwo}{\var}{\ctm}}{\bot}{\stoup}
+  }
+\]
+\[
+  \indrule{der}{
+    \judgE{\ctx}{\tm}{\typ}{\stoup}
+  }{
+    \judgE{\ctx}{\command{\name}{\tm}}{\bot}{\stoup \cup \set{\name : \typ}}
+  }
+  \HS
+  \indrule{W$_i$}{
+    \judgE{\ctx}{\ctm}{\bot}{\stoup}
+  }{
+    \judgE{\ctx}{\#c}{\typtwo}{\stoup}
+  }
+\]
+\caption{Ecumenical type system for the $\lambdamulep$-calculus.}\label{fig:typesystem}
+\end{figure}
+
+\mariana{The constant type $\bot$ is used for typing commands.}
+\end{definition}
+
+\subsubsection{Annotations}
+\begin{enumerate}
+  \item Intuitionistic Weakening is not used for normalization, 
+  but for provability of non minimal intuitionistic logic.
+  
+  {\bf Example:} $\stp{\neg B,A \cimp B, A}{C}{\cdot}$ is not provable:
+  \[
+  \infer[{\mbox{\red{\bf W}}}]{
+    \stp{\Gamma}{C}{\cdot}
+  }{
+    \infer[{\cimp\mbox{-elim}}]{
+      \stp{\Gamma}{\cdot}{\cdot}
+    }{
+      \infer[]{
+        \stp{\Gamma}{A \cimp B}{\cdot}
+      }{
+        (A \cimp B \textit{ is in } \Gamma)
+      }
+      \HS
+      \infer[]{
+      \stp{\Gamma}{A}{\cdot}
+      }{
+        (A \textit{ is in } \Gamma)
+      }
+      \HS
+      \infer[]{
+      \stp{\Gamma,B}{\cdot}{\cdot}
+      }{
+        (\neg B \textit{ is in } \Gamma)
+      }
+    }
+  }
+  \]
+  with $\Gamma = \neg B,A \cimp B,A$.
+  The strategy of this proof is to remove $C$ from the stoup.
+  This example indicates that the {\em reductio ad absurdum} can't be captured without having intuitionistic weakening.
+  \item Instead of having commands without types, we could use $\bot$.
+  \item La lógica clásica colapsa si tenemos:
+    \[
+      \indrule{}{
+        \judgE{\ctx, \var:\typ}{\ctm}{\bot}{\name : \typtwo, \stoup}
+      }{
+        \judgE{\ctx, \var:\typ}{\mu \name.\ctm}{\typtwo}{\stoup}
+      }
+    \]
+  \item We don't have $A \to \bot$, it's captured with $\cimp$ (and $A \iimp \bot \equiv A \cimp \bot$). 
+  But it depends on the system used.
+  \item In this example, $\str{\ctm}$ changes its type!
+  (Note: this was fixed, I think)
+  \[
+    \indrule{}{
+      \judgE{\ctx}{\str{\ctm}}{\typ \iimp \typtwo}{\stoup}
+      \HS
+      \judgE{\ctx}{\tmthree}{\typ}{\stoup}
+      \HS
+      \judgE{\ctx, \var:\typtwo}{\tmfour}{\typthree}{\stoup}
+    }{
+      \judgE{\ctx}{\appi{\str{\ctm}}{\tmthree}{\var}{\tmfour}}{\typthree}{\stoup}
+    }
+  \]
+  \item\label{ite:obs} {\bf Observation (16/11/22):} Since types $((\typ \cimp \typtwo) \cimp \typ) \cimp \typ$
+  and $((\typ \iimp \typtwo) \iimp \typ) \cimp \typ$ are equivalent,
+  then the terms 
+  $\absc{\var}{\name}{\appc{\var}{\absc{\vartwo}{\nametwo}{\command{\name}{\vartwo}}}{\vartwo}{\command{\name}{\vartwo}}}$
+  and $\absc{\var}{\name}{\appc{\var}{\absi{\vartwo}{\str{\command{\name}{\vartwo}}}}{\vartwo}{\command{\name}{\vartwo}}}$
+  should behave the same way.
+\end{enumerate}
+
+\subsection{Typing examples}
+\begin{enumerate}
+  \item {\bf Peirce's Law}: Using the observation~\ref{ite:obs} from the previous subsection
+  (and the Example~\ref{ex:Peirce}), we have two terms with 
+  equivalent types\footnote{four actually, as the types $((\typ \iimp \typtwo) \cimp \typ) \cimp \typ$ 
+  and $((\typ \cimp \typtwo) \cimp \typ) \cimp \typ$ are equivalent to the previous two.}.
+  \begin{enumerate}
+    \item Let
+    \[
+    \deriv := \left(
+    \indrule{I-$\cimp$}{
+      \indrule{der}{
+        \indrule{ax}{\emptyPremise}{\judgE{\ctx, \vartwo : \typ}{\vartwo}{\typ}{\nametwo : \typtwo}}
+      }{
+        \judgE{\ctx, \vartwo : \typ}{\command{\name}{\vartwo}}{\bot}{\name : \typ, \nametwo : \typtwo}
+      }
+    }{
+      \judgE{\ctx}{\absc{\vartwo}{\nametwo}{\command{\name}{\vartwo}}}{\typ \cimp \typtwo}{\name : \typ}
+    }
+      \right)
+    \]
+    We build the following derivation:
+    \[
+    \indrule{I-$\cimp$}{
+      \indrule{E-$\cimp$}{
+        \indrule{ax}{
+          \emptyPremise
+        }{
+          \judgE{
+            \ctx
+          }{
+            {\var}
+          }{
+            (\typ \cimp \typtwo) \cimp \typ
+          }{
+            \name : \typ
+          }
+        }
+        \HS
+        \derivdots{\deriv}
+        \HS
+        \indrule{der}{
+          \indrule{ax}{\emptyPremise}{\judgE{\ctx, \vartwo : \typ}{\vartwo}{\typ}{\estoup}}
+        }{
+          \judgE{\ctx, \vartwo : \typ}{\command{\name}{\vartwo}}{\bot}{\name : \typ}
+        }
+      }{\judgE{\ctx}{
+          \appc{\var}{\absc{\vartwo}{\nametwo}{\command{\name}{\vartwo}}}{\vartwo}{\command{\name}{\vartwo}}
+        }{\bot}{\name : \typ}}
+    }{\judgE{\ectx}{
+        \absc{\var}{\name}{\appc{\var}{\absc{\vartwo}{\nametwo}{\command{\name}{\vartwo}}}{\vartwo}{\command{\name}{\vartwo}}}
+      }{((\typ \cimp \typtwo) \cimp \typ) \cimp \typ}{\estoup}
+    }
+    \]
+    where $\ctx = \var : (\typ \cimp \typtwo) \cimp \typ$
+
+    \item Let
+    \[
+    \deriv := \left(
+    \indrule{I-$\iimp$}{
+      \indrule{W$_i$}{
+        \indrule{der}{
+          \indrule{ax}{\emptyPremise}{\judgE{\ctx, \vartwo : \typ}{\vartwo}{\typ}{\nametwo : \typtwo}}
+        }{
+        \judgE{\ctx, \vartwo : \typ}{\command{\name}{\vartwo}}{\bot}{\name : \typ, \nametwo : \typtwo}
+        }
+      }{
+        \judgE{\ctx, \vartwo : \typ}{\str{\command{\name}{\vartwo}}}{\typtwo}{\name : \typ, \nametwo : \typtwo}
+      }
+    }{
+      \judgE{\ctx}{\absi{\vartwo}{\str{\command{\name}{\vartwo}}}}{\typ \iimp \typtwo}{\name : \typ}
+    }
+      \right)
+    \]
+    We build the following derivation:
+    \[
+    \indrule{I-$\cimp$}{
+      \indrule{E-$\cimp$}{
+        \indrule{ax}{\emptyPremise}{
+          \judgE{\ctx}{{\var}}{(\typ \iimp \typtwo) \iimp \typ}{\name : \typ}
+        }
+        \HS
+        \derivdots{\deriv}
+        \HS
+        \indrule{der}{
+          \indrule{ax}{
+            \emptyPremise
+          }{
+            \judgE{\ctx, \vartwo : \typ}{\vartwo}{\typ}{\estoup}
+          }
+        }{
+          \judgE{\ctx, \vartwo : \typ}{\command{\name}{\vartwo}}{\bot}{\name : \typ}
+        }
+      }{\judgE{\ctx}{
+        \appc{\var}{\absi{\vartwo}{\str{\command{\name}{\vartwo}}}}{\vartwo}{\command{\name}{\vartwo}}
+      }{\bot}{\name : \typ}}
+    }{\judgE{\ectx}{
+        \absc{\var}{\name}{\appc{\var}{\absi{\vartwo}{\str{\command{\name}{\vartwo}}}}{\vartwo}{\command{\name}{\vartwo}}}
+      }{
+        ((\typ \iimp \typtwo) \iimp \typ) \cimp \typ
+      }{
+        \estoup
+      }
+    }
+    \]
+    where $\ctx = \var : (\typ \iimp \typtwo) \iimp \typ$
+  \end{enumerate}
+\end{enumerate}
+
+\end{marianaenv}
+
+
+
+\iffalse
+The $\lambda\mu-\mathcal{LE}_p$ calculus has two kinds of variables: the $\lambda$-variables $x, y, z,\ldots$, and the $\mu$- variables $\alpha,\beta,\gamma,\ldots$. The $\lambda$-variables refer to the {\em stoup}, while the $\mu$-variables abstract the formulas in the classical context.
+
+where $x,u,\lambda x.u,t,  t(u,y.r),\mu\alpha.e$ are {\em unnamed terms} and $e,[\alpha]t$ are {\em named terms}.  $t(u, y.r)$ is a generalized application, and it intuitively means that $t$ is applied to $u$ in the context of the substitution $\{\_/y\}r$.
+
+\red{I have {\bf no clue} how to do it yet!!!}
+Reductions:
+\begin{itemize}
+\item logical reduction:
+\[\D\langle \lambda x.t\rangle(u,y.r)\to \{\D\langle\{u/x\}t\rangle/y\}r
+\]
+where $\D$ id a {\em distant context} as described in~\cite{DBLP:conf/fossacs/SantoKP22}.
+\item  structural reduction: 
+\[
+(\mu\beta. e)(u,y.r) \to\mu\beta.e[([\beta]w)(u,y.r)/[\beta]w)]
+\]
+where $e[([\beta]w)(u,y.r)/[\beta]w)$ is obtained from $e$ by replacing inductively each subterm of the form $[\beta]w$ by $([\beta]w)(u,y.r)$.
+\item renaming:
+\[
+[\alpha]\mu\beta.u\to u[\alpha/\beta]
+\]
+\end{itemize}
+
+\section{TODO}
+What we should prove (at least):
+\begin{enumerate}
+\item confluence;
+\item subject reduction;
+\item (strong?) normalization.
+\end{enumerate}
+
+Moreover: 
+\begin{enumerate}
+\item fragments;
+\item mixed behaviors (classical and intuitionistic).
+\end{enumerate}
+\fi

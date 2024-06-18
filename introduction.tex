@@ -1,0 +1,36 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+Natural deduction systems, as proposed by Gentzen~\cite{gentzen1969} and further studied by Prawitz~\cite{prawitz1965}, is one of the most well known proof-theoretical frameworks. Part of its success is based on the fact that natural deduction rules present a simple characterization of logical constants, especially in the case of intuitionistic logic. However, there has been a lot of criticism on extensions of the intuitionistic set of rules in order to deal with classical logic. Indeed, most of such extensions add, to the usual introduction and elimination rules, extra rules governing  negation. As a consequence, several meta-logical properties, the most prominent one being {\em harmony}, are lost.\footnote{A logical connective is called {\em harmonious} in a certain proof system if there exists a certain balance between the rules defining it. For example, in natural deduction based systems, harmony is ensured when introduction/elimination rules do not contain insufficient/excessive amounts of information~\cite{DBLP:conf/ictac/Diaz-CaroD21}.}
+
+In~\cite{DBLP:journals/Prawitz15}, Dag Prawitz proposed a
+natural deduction {\em ecumenical system}, where classical logic and intuitionistic logic are codified in the same system. In this system, 
+the classical logician and the intuitionistic logician would share the universal quantifier, conjunction, negation and the constant for the absurd ($\forall,\wedge,\neg,\bot$), but they would each have their own existential quantifier, disjunction and implication, with different meanings ($\exists_j,\vee_j,\to_j$, where $j\in\{i,c\}$ for the intuitionistic and classical versions, respectively). Prawitz' main idea is that these different meanings are given by a semantical framework that can be accepted by both parties.  
+
+In his ecumenical system, Prawitz recovers the harmony of rules, but the rules for the classical operators do not satisfy {\em separability}~\cite{Murzi2018}. In fact, the classical rules are not {\em pure}, in the sense that 
+negation 
+is used in the definition of the introduction and elimination rules for the classical operators. 
+
+For example, the rules for $\vee_{c}$ are defined as
+
+\begin{prooftree}
+\AxiomC{$[\neg A,\neg B]$}
+\noLine
+\UnaryInfC{$\Pi$}
+\noLine
+\UnaryInfC{$\bot$}
+\RightLabel{$\vee_{c}$-int}
+\UnaryInfC{$A \vee_{c} B$}
+\DisplayProof
+\qquad
+\AxiomC{$A \vee_{c} B$}
+\AxiomC{$\neg A$}
+\AxiomC{$\neg B$}
+\RightLabel{$\vee_{c}$-elim}
+\TrinaryInfC{$\bot$}
+\end{prooftree}
+
+In~\cite{DBLP:journals/corr/abs-2204-02199} we proposed a system adapting, to the natural deduction framework,  Girard's mechanism of \textit{stoup}~\cite{DBLP:journals/mscs/Girard91}.  This allowed the definition of a pure harmonic natural deduction system $\mathcal{LE}_{p}$ for the propositional fragment of  Prawitz' ecumenical logic. 
+
+In this paper, propose an ecumenical term calculus based on Parigot's $\lambda\mu$-calculus~\cite{parigot92lpar}, where the idea of distant reductions~\cite{DBLP:conf/fossacs/SantoKP22} is applied in the context of for general natural deduction rules~\cite{DBLP:journals/aml/Plato01a}.
+

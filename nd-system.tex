@@ -1,0 +1,90 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+In this work, we will be mostly interested in the implicational fragment of ecumenical systems, so we will restrict our discussion to implications.\footnote{EP. It is still not clear to me if we really need to be minimal, so I will leave bottom and negation. Easier to drop them later, than to re-add.}
+
+Sequents in $\LEi$ have the form $\stpg$, an extension of natural deduction sequents, where $\Pi$ is a multiset of at most one formula-- the {\em stoup} -- and  $\Gamma,\Delta$ are multisets of formulas -- the classical contexts.\footnote{As for the case of $\LC$~\cite{DBLP:journals/mscs/Girard91}, the {\em stoup} will carry the intuitionistic (positive) and neutral information, while the context accumulates the classical information related to it.}  
+
+The (additive version of the) natural deduction system $\LEi$  is presented in Figure~\ref{fig:LEi}. 
+
+\begin{figure}[ht]
+{\sc Intuitionistic rules}
+\[
+\begin{array}{lc@{\qquad}l}
+\infer[{\iimp\mbox{-int}}]{\stp{\Gamma}{A\iimp B}{\Delta}}{\stp{\Gamma,A}{B}{\Delta}}
+& &
+\infer[{\iimp\mbox{-elim}}]{\stp{\Gamma}{C}{\Delta}}{\stp{\Gamma}{A\iimp B}{\Delta} &
+\stp{\Gamma}{A}{\Delta} & \stp{\Gamma,B}{C}{\Delta}}
+\end{array}
+\]
+\\[5pt]
+{\sc Classical rules}
+\[
+\begin{array}{lc@{\qquad}l}
+\infer[{\cimp\mbox{-int}}]{\stp{\Gamma}{A\cimp B}{\Delta}}{\stp{\Gamma,A}{\cdot}{B,\Delta}}
+& &
+\infer[{\cimp\mbox{-elim}}]{\stp{\Gamma}{\cdot}{\Delta}}{\stp{\Gamma}{A\cimp B}{\Delta} &
+\stp{\Gamma}{A}{\Delta} & \stp{\Gamma,B}{\cdot}{\Delta}}
+\end{array}
+\]
+\\[5pt]
+{\sc Neutral rules}
+\[
+\begin{array}{lc@{\qquad}l}
+\infer[{\neg\mbox{-int}}]{\stp{\Gamma}{\neg A}{\Delta}}{\stp{\Gamma,A}{\cdot}{\Delta}}
+& &
+\infer[{\neg\mbox{-elim}}]{\stp{\Gamma}{\cdot}{\Delta}}{\stp{\Gamma}{A}{\Delta} &
+\stp{\Gamma}{\neg A}{\Delta}}
+\end{array}
+\]
+\\[5pt]
+{\sc Hypothesis formation \& Dereliction}
+\[
+\begin{array}{lc@{\qquad}l}
+\infer[\init]{\stp{\Gamma,A}{A}{\Delta}}{}
+& &
+\infer[\mbox{der}]{\stp{\Gamma}{B}{\Delta,A}}{\stp{\Gamma}{A}{\Delta,A}}
+\end{array}
+\]
+\\[5pt]
+{\sc Structural rule} \red{EP. We can drop this later}
+\[
+\begin{array}{lc@{\qquad}lc@{\qquad}l}
+\infer[W_i]{\stp{\Gamma}{A}{\Delta}}{\stp{\Gamma}{\cdot}{\Delta}} 
+\end{array}
+\]
+\caption{Ecumenical natural deduction system $\LEi$.}\label{fig:LEi}
+\end{figure}
+
+Derivations are  inductively defined in the usual way. 
+\begin{definition}\label{def:der}
+A $\LEi${\em derivation} is a finite rooted tree with nodes labeled by
+sequents, axioms at the leaf nodes, and where each node is connected
+with the (immediate) successor nodes (if any) according to its
+inference rules. A sequent $S$ is \emph{derivable} in the sequent
+system $\LEi$, notation $\deduc{\LEi}{S}$, iff there is a derivation
+of $S$ in $\LEi$.  The system $LEi$ is usually omitted when it can
+be inferred from the context.
+
+A formula $A$ is a {\em theorem} of $\LEi$ if and only if $\vL \stp{}{A}{}$. 
+\end{definition}
+
+Finally, it is an easy matter to show that the implicational fragment of $\mathcal{NE}$ and $\LEi$ are equivalent.
+
+
+\begin{example}[The Peirce's Law]
+\label{ex:Peirce}
+We observe that any sequent of the form  $(((A \to_{j} B) \to_{k} A) \to_{c} A)$ with $j,k\in\{i,c\}$ is provable in  $\LEi$. That is, provability is maintained if the outermost implication is classical. And more than that: all the proofs have the same following structure, where $\Gamma = (A\cimp B)\cimp A$.
+\[
+\infer[\cimp\mbox{-int}]{\stp{}{(((A\cimp B)\cimp A)\cimp A}{\cdot}}
+{\infer[\cimp\mbox{-elim}]{\stp{\Gamma}{\cdot}{A}}
+{\infer[\init]{\stp{\Gamma}{(A\cimp B)\cimp A}{A}}{}&
+\infer[\cimp\mbox{-int}]{\stp{\Gamma}{A\cimp B}{A}}
+{\infer[\der]{\stp{\Gamma,A}{B}{A}}
+{\infer[\init]{\stp{\Gamma,A}{A}{A}}{}}}&
+\infer[\der]{\stp{\Gamma,A}{\cdot}{A}}
+{\infer[\init]{\stp{\Gamma,A}{A}{A}}{}}}}
+\]
+\end{example}
+
+\red{EP. I am still thinking about minimal vs intuitionistic. More later!}

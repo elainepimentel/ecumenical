@@ -1,0 +1,261 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Basic Definitions and Macros 
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Authors: Elaine Pimentel
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheorem{dummythm}{dummythm}[section]
+\theoremstyle{definition}
+\newtheorem{definition}[dummythm]{Definition}
+\newtheorem{lemma}[dummythm]{Lemma}
+\newtheorem{theorem}{Theorem}%[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{fact}[theorem]{Fact}
+
+
+%colors
+\newcommand{\red}[1]{\textcolor{red}{#1} }
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\magenta}[1]{\textcolor{magenta}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\cyan}[1]{\textcolor{cyan}{#1}}
+\newcommand{\violet}[1]{\textcolor{violet}{#1}}
+
+%Cal
+\def\Ascr{{\cal A}}
+\def\Bscr{{\cal B}}
+\def\Cscr{{\cal C}}
+\def\Dscr{{\cal D}}
+\def\Escr{{\cal E}}
+\def\Fscr{{\cal F}}
+\def\Gscr{{\cal G}}
+\def\Hscr{{\cal H}}
+\def\Iscr{{\cal I}}
+\def\Jscr{{\cal J}}
+\def\Kscr{{\cal K}}
+\def\Lscr{{\mathcal L}}
+\def\Mscr{{\cal M}}
+\def\Nscr{{\cal N}}
+\def\Oscr{{\cal O}}
+\def\Pscr{{\cal P}}
+\def\Qscr{{\cal Q}}
+\def\Rscr{{\cal R}}
+\def\Sscr{{\cal S}}
+\def\Tscr{{\cal T}}
+\def\Uscr{{\cal U}}
+\def\Vscr{{\cal V}}
+\def\Wscr{{\cal W}}
+\def\Xscr{{\cal X}}
+\def\Yscr{{\cal Y}}
+\def\Zscr{{\cal Z}}
+
+%stuff
+\newcommand{\2}{\mathsf{2}}
+\newcommand{\3}{\mathsf{3}}
+\newcommand{\4}{\mathsf{4}}
+\newcommand{\5}{\mathsf{5}}
+\newcommand{\Ax}{\mathcal{A}}
+\newcommand{\be}{\mathsf{b}}
+\newcommand{\B}{\mathsf{B}}
+\newcommand{\C}{\mathsf{C}}
+\newcommand{\CK}{\mathsf{CK}}
+\newcommand{\ccut}{\ct{\mathsf{cut}}}
+\newcommand{\cexists}{\exists_{c}}
+\newcommand{\cimp}{\rightarrow_c}
+\newcommand{\cless}{\preccurlyeq}
+\newcommand{\clozenge}{\lozenge_c}
+\newcommand{\cs}{]\!]}
+\newcommand{\cvee}{\vee_c}
+\newcommand{\cwedge}{\wedge_c}
+\newcommand{\cut}{\mathsf{cut}}
+\newcommand{\D}{\mathsf{D}}
+\newcommand{\deduc}[2]{\vdash_{#1} \,{#2}}
+\newcommand{\de}{\mathsf{d}}
+\newcommand{\defs}{:=}
+\newcommand{\der}{\mathsf{der}}
+\newcommand{\dpt}[1]{\operatorname{\mathsf{dp}}\left( #1 \right)}
+\newcommand{\E}{\mathsf{E}}
+\newcommand\eg{\hbox{\textit{e.g.}}}
+\newcommand{\EK}{\mathsf{EK}}
+\newcommand{\ESf}{\mathsf{ES4}}
+\newcommand{\es}{\emptyset}
+\newcommand{\ew}{\mathsf{ew}}
+\newcommand{\fa}{\forall}
+\newcommand{\ex}{\exists}
+\newcommand\FIL{\mathsf{FIL}}
+\newcommand\FLEci{\mathsf{FLEci}}
+\newcommand{\FLNS}{\mathsf{FLNS}}
+\newcommand{\forces}{\Vdash}
+\newcommand{\G}{\mathsf{G}}
+\newcommand{\gcinit}{\mathsf{init_c}}
+\newcommand{\ginit}{\mathsf{init_g}}
+\newcommand\Gtcp{\mathsf{G3cp}}
+\newcommand\Gtip{\mathsf{G3ip}}
+\newcommand\GtC{\mathsf{G3c}}
+\newcommand\GtI{\mathsf{G3i}}
+\newcommand{\hearts}{\heartsuit}
+\long\def\hide#1\endhide{}
+\newcommand{\ibox}[1]{{\Box_{#1}}}
+\newcommand{\icut}{\rt{\mathsf{cut}}}
+\newcommand{\id}{\mathsf{id}}
+\newcommand\ie{\hbox{\textit{i.e.}}}
+\newcommand{\iequiv}{\leftrightarrow_i}
+\newcommand{\iexists}{\exists_{i}}
+\newcommand{\iimp}{\rightarrow_i}
+\newcommand{\impl}{\rightarrow}
+\newcommand{\ilozenge}{\lozenge_i}
+\newcommand{\init}{\mathsf{init}}
+\newcommand{\ivee}{\vee_i}
+\newcommand{\iwedge}{\wedge_i}
+\newcommand{\IK}{\mathsf{IK}}
+\newcommand{\ka}{\mathsf{k}}
+\newcommand{\K}{\mathsf{K}}
+\newcommand{\labEK}{\mathsf{labEK}}
+\newcommand{\labESf}{\mathsf{labES4}}
+\newcommand{\lambdamulep}{\lambda_{\mu}\mathcal{LE}_p}
+\newcommand{\lift}{\mathtt{lift}}
+\newcommand{\logick}{\textsf{K}}
+\newcommand{\logicik}{\textsf{IK}}
+\newcommand{\Lor}{\bigvee}
+\newcommand\lra{\longrightarrow}
+\newcommand{\LC}{\mathsf{LC}}
+\newcommand{\LCE}{\mathsf{LCE}}
+\newcommand\LJ{\textsf{LJ}}
+\newcommand\LE{\mathsf{LE}}
+\newcommand\LEc{\mathsf{LEc}}
+\newcommand\LEci{\mathsf{LEci}}
+\newcommand\LEi{\mathsf{LE}_{\to}}
+\newcommand\LJp{\mathsf{LJp}}
+\newcommand\LK{\mathsf{LK}}
+\newcommand\LKJ{\mathsf{LKJ}}
+\newcommand{\LLF}{\mathsf{LLF}}
+\newcommand{\LLS}{\mathsf{LLS}}
+\newcommand{\LLNS}{\mathsf{LLNS}}
+\newcommand\LmLJ{\mathsf{LL}_{\mathsf{mLJ}}}
+\newcommand{\LNS}{\mathsf{LNS}}
+\newcommand{\LS}{\mathsf{LS}}
+\newcommand{\LTS}{\mathsf{LTS}}
+\newcommand\LU{\textsf{LU}}
+\newcommand{\luk}{\textsl{\L}}
+\newcommand{\m}{\mathcal{M}}
+\newcommand{\M}{\mathsf{M}}
+\newcommand{\mcut}{\mathsf{mcut}}
+\newcommand\mLJ{\textsf{mLJ}}
+\newcommand\mLEci{\mathsf{mLEci}}
+\newcommand{\modelse}{\models_{\E}}
+\newcommand{\nes}[1]{\left[#1\right]}
+\newcommand{\nesh}[1]{\mathcal{S}\left\{#1\right\}}
+\newcommand{\nesi}[1]{\left\langle#1\right\rangle}
+\newcommand{\NE}{\mathsf{NE}}
+\newcommand{\nEK}{\mathsf{nEK}}
+\newcommand{\nEKc}{\mathsf{nEK}_c}
+\newcommand{\nEKi}{\mathsf{nEK}_i}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand\NIK{\mathsf{NIK}}
+\newcommand\NJ{\textsf{NJ}}
+\newcommand\NK{\textsf{NK}}
+\newcommand{\NS}{\mathsf{NS}}
+\newcommand{\os}{[\![}
+\newcommand{\ov}[1]{\overline{#1}}
+\newcommand{\denot}[1]{\os #1 \cs}
+\newcommand{\Ob}{\mathcal{O}}
+\newcommand{\PP}{\mathsf{P}}
+\newcommand{\Pow}[1]{\mathfrak{P}\left(#1\right)}
+\newcommand{\Prem}{\mathcal{P}}
+\newcommand{\Prop}{\mathcal{P}}
+\newcommand{\pspace}{\mathsf{PSPACE}}
+\newcommand\ra\rightarrow
+\newcommand{\ran}{\rangle}
+\newcommand{\rarr}{\rightarrow}
+\newcommand{\rel}{R}
+\newcommand{\relfo}{R}
+\newcommand{\res}{\upharpoonright}
+\newcommand\rest{\mathrel{\small{\mbox{$>\!\!\!-$}}}}
+\newcommand\Ra{\Rightarrow}
+\newcommand{\seq}{\Rightarrow}
+\newcommand{\Seq}{\mathcal{S}}
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\Sf}{\mathsf{S4}}
+\newcommand{\Sfi}{\mathsf{S5}}
+\newcommand{\stpg}{\Gamma\vdash\Pi;\Delta}
+\newcommand{\stp}[3]{#1\vdash#2;#3}
+\newcommand{\sse}{\subseteq}
+\newcommand\store{\textsf{store}}
+\newcommand{\tradm}[2]{\os#1\cs_{#2}}
+\newcommand{\tradme}[2]{[#1]_{#2}^e}
+\newcommand{\tradmk}[1]{\os#1\cs_\K}
+\newcommand{\tradms}[1]{\os#1\cs}
+\newcommand{\te}{\mathsf{t}}
+\newcommand{\T}{\mathsf{T}}
+\newcommand{\tup}[1]{\langle#1\rangle}
+\newcommand{\TB}{\mathsf{TB}}
+\newcommand{\tseq}[3]{#1:\;#2\vdash#3}
+\newcommand{\val}{V}
+\newcommand{\Vee}{\bigvee}
+\newcommand{\vN}{\vdash_{\mathcal{NE}}}
+\newcommand{\vL}{\vdash_{\LEi}}
+\newcommand{\vLp}{\vdash_{\mathcal{LE}_p}}
+\newcommand{\wld}{W}
+\newcommand{\W}{\mathsf{W}}
+\newcommand{\Wdg}{\bigwedge}
+\newcommand\world[2]{#1:#2}
+
+\newcommand{\TODO}[1]{\red{TODO: #1}}
+\newcommand{\HS}{\hspace{.5cm}}
+
+% Terms
+\newcommand{\tm}{t}
+\newcommand{\tmtwo}{s}
+\newcommand{\tmthree}{u}
+\newcommand{\tmfour}{r}
+
+\newcommand{\ctm}{c}
+\newcommand{\ctmtwo}{d}
+
+\newcommand{\var}{x}
+\newcommand{\vartwo}{y}
+\newcommand{\varthree}{z}
+
+\newcommand{\name}{\alpha}
+\newcommand{\nametwo}{\beta}
+\newcommand{\namethree}{\gamma}
+
+\newcommand{\absi}[2]{\lambda #1.\,#2}
+\newcommand{\appi}[4]{#1(#2,#3.#4)}
+\newcommand{\absc}[2]{\mu #1.\,#2}
+\newcommand{\command}[2]{[#1]\,#2}
+\newcommand{\appc}[4]{#1[#2,#3.#4]}
+
+% Types
+\newcommand{\btyp}{\alpha}
+\newcommand{\btyptwo}{\beta}
+\newcommand{\btypthree}{\gamma}
+
+\newcommand{\typ}{A}
+\newcommand{\typtwo}{B}
+\newcommand{\typthree}{C}
+
+\newcommand{\judgE}[4]{#1 \vdash #2 : #3 ; #4}
+\newcommand{\judgcE}[3]{#1 \vdash #2 ; #3}
+
+\newcommand{\ctx}{\Gamma}
+\newcommand{\stoup}{\Delta}
+
+% Inductive rules with prooftree:
+\newcommand{\indrulename}[1]{\texttt{\textup{#1}}}
+\newcommand{\indrule}[3]{
+\ensuremath{
+\begin{array}{c}
+  \prooftree #2
+    \justifies #3
+    \thickness=0.05em
+    \using \indrulename{#1}
+  \endprooftree
+\end{array}}}

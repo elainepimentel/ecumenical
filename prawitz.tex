@@ -1,0 +1,78 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+The language $\Lscr$ used for ecumenical systems is described as follows. We will use a subscript $c$ for the classical meaning and $i$ for the intuitionistic, dropping such subscripts when formulae/connectives can have either meaning. 
+
+Classical and intuitionistic  n-ary predicate symbols ($p_{c}, p_{i},\ldots$) co-exist in $\Lscr$ but have different meanings. 
+The neutral logical connectives $\{\bot,\neg,\wedge,\forall\}$ are common for classical and intuitionistic fragments, while $\{\iimp,\ivee,\iexists\}$ and $\{\cimp,\cvee,\cexists\}$ are restricted to intuitionistic and classical interpretations, respectively. In order to avoid clashes of variables we make use of a denumerable set $a, b,\ldots$ of special variables called {\em parameters}, which do not appear quantified. 
+
+
+In Fig.~\ref{fig:NE} we present $\mathcal{NE}$ Prawitz' original natural deduction first-order ecumenical system. In the rules for quantifiers, the notation $A(a/x)$  stands for the substitution of $a$ for every (visible) instance of $x$ in $A$. In the rules $\exists_i\mbox{-elim},\forall\mbox{-int}$, $a$ is a fresh parameter, \ie, it does not occur free in any assumption that $A,B$ depends on (apart from the assumption eliminated by $\exists_{i}$-elim).
+
+\begin{figure}[htp]
+{\sc Intuitionistic rules}
+\[
+\begin{array}{lc@{\quad}l}
+\infer[{\iimp\mbox{-int}}]{ A\iimp B}
+{\deduce{B}{\deduce{}{\deduce{\Pi}{\deduce{}{[A]}}}}} 
+&
+\infer[{\iimp\mbox{-elim}}]{B}{A\iimp B & A}
+&
+\infer[{\vee_i\mbox{-int}_j}]{ A_1\vee_i A_2}{ A_j}
+\\[5pt]
+\infer[{\vee_i\mbox{-elim}}]{C}{ A\vee_i B & \deduce{C}{\deduce{}{\deduce{\Pi_1}{\deduce{}{[A]}}}}
+ &\deduce{C}{\deduce{}{\deduce{\Pi_2}{\deduce{}{[B]}}}}} 
+&
+\infer[\exists_i\mbox{-int}]{\exists_ix.A }{ A(a/x)}
+&
+\infer[\exists_i\mbox{-elim}]{ B}{ \exists_ix.A &  \deduce{B}{\deduce{}{\deduce{\Pi}{\deduce{}{[A(a/x)]}}}}}
+\end{array}
+\]
+{\sc Classic rules}
+\[
+\begin{array}{lc@{\quad}l}
+\infer[{\cimp\mbox{-int}}]{A\cimp B}
+{\deduce{\bot}{\deduce{}{\deduce{\Pi}{\deduce{}{[A,\neg B]}}}}} 
+&
+\infer[{\cimp\mbox{-elim}}]{\bot}{ A\cimp B & A & \neg B}
+&
+\infer[{\vee_c\mbox{-int}}]{A\vee_c B}{\deduce{\bot}{\deduce{}{\deduce{\Pi}{\deduce{}{[\neg A,\neg B]}}}}} 
+\\[5pt]
+\infer[{\vee_c\mbox{-elim}}]{\bot}{A\vee_c B & \neg A &  \neg B} 
+&
+\infer[\exists_c\mbox{-int}]{ \exists_cx.A}{\deduce{\bot}{\deduce{}{\deduce{\Pi}{\deduce{}{[\forall x.\neg A]}}}}}
+&
+\infer[\exists_c\mbox{-elim}]{\bot}{ \exists_cx.A &  \forall x.\neg A}
+\\[5pt]
+\infer[p_c\mbox{-int}]{ p_c}{\deduce{\bot}{\deduce{}{\deduce{\Pi}{\deduce{}{[\neg p_i]}}}}}
+&
+\infer[p_c\mbox{-elim}]{ \bot}{p_c &  \neg p_i}
+\end{array}
+\]
+{\sc Neutral rules}
+\[
+\begin{array}{lc@{\qquad}lc@{\qquad}lc@{\qquad}l}
+\infer[{\wedge\mbox{-int}}]{A \wedge B}{A \quad  B} 
+& &
+\infer[{\wedge\mbox{-elim}_j}]{ A_j}{A_1\wedge A_2} 
+& &
+\infer[{\neg\mbox{-int}}]{\neg A}{\deduce{\bot}{\deduce{}{\deduce{\Pi}{\deduce{}{[A]}}}}}
+& & 
+\infer[{\neg\mbox{-elim}}]{\bot}{ A &  \neg A}
+\\[5pt]
+\infer[\bot\mbox{-elim}]{A}{ \bot}
+& &
+\infer[\forall\mbox{-int}]{ \forall x.A}{ A(a/x)}
+& & 
+\infer[\forall\mbox{-elim}]{A(a/x) }{\forall x.A}
+\end{array}
+\]
+
+\caption{Ecumenical natural deduction system $\mathcal{NE}$.  In rules 
+$\forall\mbox{-int}, \exists_i\mbox{-elim}, \exists_c\mbox{-elim}$, the parameter $a$ is fresh.}\label{fig:NE}
+\end{figure}
+
+The propositional fragment of the natural deduction Ecumenical system proposed by Prawitz (here called $\mathcal{NE}_{p}$) has been proved normalizing, sound and complete with respect to  intuitionistic logic's Kripke semantics in~\cite{luiz17}. 
+
+The rules for intuitionistic implication are the traditional ones, while the rules for classical implication make sure that $A\to_{c} B$ is treated as $\neg A\lor_c B$, its classical rendering. The surprising facts are that (i) one can have a single constant for absurdity $\bot$ (instead of two, one intuitionistic and one classical, taking that absurd as the unit of disjunction, of which we have two variants) and (ii) that the intuitionistic and classical negations coincide.
+If negation was simply implication into false (as it is the case for intuitionistic negation) one might expect two negations, one intuitionistic and one classical.

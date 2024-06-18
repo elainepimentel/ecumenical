@@ -1,0 +1,121 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+The idea for normalization  of systems with stoup follows the usual one for natural deduction systems: show how to {\em compose} derivations, so to eliminate detours. The presence of {\em stoups}, however, adds an extra case analysis, since the composition may occur in the {\em stoup} or in the classical context. 
+\subsection{Composition}
+$\LEi$ has two modes of composition: a composition that occurs in the \textit{stoup} and a composition that occurs in the classical context. 
+
+\subsection{Composition in the \textit{stoup}}
+\begin{theorem}\label{thm:comp-stoup}
+Let $\pi_{1}$ be a derivation of $\stp{\Gamma}{A}{\Delta}$ and $\pi_{2}$ be a derivation of $\stp{\Gamma,A}{B}{\Delta}$ in $\LEi$. Then, the result of replacing the assumption $A$ in $\pi_{2}$ by the derivation $\pi_{1}$ is a derivation $\pi$ of $\stp{\Gamma}{B}{\Delta}$. 
+\end{theorem}
+
+
+\subsection{Composition in the \textit{context}}
+\begin{theorem}
+Let $\pi_{1}$ be a derivation of $\stp{\Gamma}{C}{\Delta,A}$, and $\pi_{2}$ be a derivation of $\stp{\Gamma,A}{B}{\Delta}$. Then, the result of replacing the assumption $A$ in $\pi_{2}$ by the derivation $\pi_{1}$ is a derivation $\pi$ of $\stp{\Gamma}{C}{\Delta, B}$, where  $\Delta_{1}^{*}$ is obtained from $\Delta_{1}$ by means of the elimination of the occurrences of $A$.
+\end{theorem}
+
+
+In what follows, we shall use the following notation to indicate composition in the \textit{stoup}  and composition  in the \textit{classical context}.
+\begin{itemize}
+\item Composition in the \textit{stoup}:
+\[
+\deduce{\stp{\Gamma}{B}{\Delta}}
+{\deduce{}
+{\deduce{\pi_1[\frac{A}{A}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{A}{\Delta}}
+{\deduce{}{\pi_2}}}}}}
+\]
+
+
+\item Composition in the \textit{classical context}:
+\[
+\deduce{\stp{\Gamma}{\cdot}{\Delta,B}}
+{\deduce{}
+{\deduce{\pi_1[\frac{A}{A}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{A}{\Delta,B}}
+{\deduce{}{\pi_2}}}}}}
+\]
+
+\item A more concise notation for composition in general: $\pi_{2}/[\frac{A}{A}]/\pi_{1}$.
+
+\end{itemize}
+
+\subsection{Reductions}
+Derivations in $\LEi$ may contain \textit{detours}: we may introduce a formula by an application of an introduction rule to immediately use it as major premiss of an application of an elimination rule. The \textit{reductions} defined in this section are intended, as usual, to eliminate \textit{detours} that may occur in a derivation.
+
+
+\begin{definition}
+A derivation that begins with with the consequence of an application of an introduction rule to a formulas $A$ or $W_{i}$ and ends with an application of the respective elimination rule is called a {\em maximal segment}, and $A$ is called the {\em maximum formula}.
+\end{definition}
+
+\begin{definition}
+Let $\Pi$ be a derivation in $\LEi$. The {\em degree of $\Pi$}, $d[\Pi ]$, is defined as $\max\{d[A]:$ A is the end-formula of maximal segment in $\Pi \}$, where $d[A]$ is the {\em weight} of the formula $A$, defin
+ed inductively by
+$$
+\begin{array}{lcl}
+d[\bot]=d[p] &=& 0 \quad p\mbox{ atomic.}\\
+d[A \to_{i,c} B] &=& d[A] + d[B] + 1 \\
+d[\neg A] &=& d[A] +1.
+\end{array}
+$$
+\end{definition}
+
+
+\begin{definition}
+A derivation $\Pi$ is called {\em normal} if and only if $d[\Pi ] = 0$.
+\end{definition}
+We will present next all the reduction steps in $\mathcal{LE}_{p}$, used in the elimination of maximal segments.
+\begin{enumerate}
+\item $\to_{i}$-reduction:\\
+
+The derivation
+\[
+\infer[\iimpe]{\stp{\Gamma}{C}{\Delta}}
+{\infer[\iimpi]{\stp{\Gamma}{A\iimp B}{\Delta}}
+{\deduce{\stp{\Gamma,A}{B}{\Delta}}{\pi_1}}&
+\deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}&
+\deduce{\stp{\Gamma,B}{C}{\Delta}}{\pi_3}}
+\]
+reduces to:
+\[
+\deduce{\stp{\Gamma}{C}{\Delta}}
+{\deduce{}
+{\deduce{\pi_3[\frac{B}{B}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{B}{\Delta}}
+{\deduce{}
+{\deduce{\pi_1[\frac{A}{A}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}}}}}}}}}
+\]
+
+Observe that the case for negation is similar and simpler.
+
+\item $\to_{c}$-reduction: the derivation
+The derivation
+\[
+\infer[\cimpe]{\stp{\Gamma}{\cdot}{\Delta}}
+{\infer[\cimpi]{\stp{\Gamma}{A\cimp B}{\Delta}}
+{\deduce{\stp{\Gamma,A}{\cdot}{\Delta,B}}{\pi_1}}&
+\deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}&
+\deduce{\stp{\Gamma,B}{\cdot}{\Delta}}{\pi_3}}
+\]
+reduces to:
+\[
+\deduce{\stp{\Gamma}{\cdot}{\Delta}}
+{\deduce{}
+{\deduce{\pi_3[\frac{B}{B}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{\cdot}{\Delta,B}}
+{\deduce{}
+{\deduce{\pi_1[\frac{A}{A}]}
+{\deduce{}
+{\deduce{\stp{\Gamma}{A}{\Delta,B}}{\pi_2}}}}}}}}}
+\]
+\end{enumerate}
+
+

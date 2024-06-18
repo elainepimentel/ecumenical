@@ -1,0 +1,38 @@
+%!TEX root = Ecumenical-types.tex
+% !TEX spellcheck = en-US
+
+We shall use Pottinger's \textit{critical derivation} strategy ~\cite{Pottinger76} to prove the normalization theorem for $\mathcal{LE}_{p}$. But before the proof of normalization, we need some definitions and preparatory lemmas that relate reductions and composition to the degree of derivations. The proof of the next lemma is obvious.
+
+\begin{lemma}\label{lemma:junction}
+Let $\Pi$ be $\Pi_{1} /[\frac{A}{\cdot ;A}]/\Pi_{2}$, the composition of derivations $\Pi_{1}$ with $\Pi_ {2}$ at junction point $A$. Then, $d[\Pi ] = max\{d[\Pi_{1} ] , d[\Pi_{2} ], d[A]\}$
+\end{lemma}
+
+\begin {lemma} \label{lemma:reduction}
+If $\Pi$ reduces to $\Pi'$, then $d[\Pi ] \leq d[\Pi']$.
+\end{lemma}
+\begin{proof}
+Directly from the form of the reductions and Lemma~\ref{lemma:junction}.
+\end{proof}
+\begin{definition}
+A derivation $\Pi$ is {\em critical} iff:
+\begin{itemize}
+\item $\Pi$ ends with an elimination rule $\alpha$;
+\item The major premiss $A$ of $\alpha$ is the end of maximal segment;
+\item $d[\Pi ]$ = $d[A]$; and
+\item For every proper subderivation $\Pi'$ of $\Pi$, $d[\Pi' ]$ $<$ $d[\Pi ]$.
+\end{itemize}
+\end{definition}
+
+\begin{lemma}\label{lemma:critical}
+\textit{(\textbf{Critical Lemma}}): Let $\Pi$ be a critical derivation of $\Gamma\vLp \Delta ; \Sigma$  in $\mathcal{LE}_{p}$. Then, $\Pi$ reduces to a derivation $\Pi'$ of $\Gamma'\vLp\Delta ; \Sigma$ with $\Gamma ' \subseteq \Gamma$, such that $d[\Pi' ]$ $<$ $d[\Pi ]$.
+\end{lemma}
+
+\begin{lemma}\label{lemma:main}
+Let $\Pi$ be a derivation of $\Gamma\vLp \Delta ; \Sigma$ with $d[\Pi]>0$.
+Then, $\Pi$ reduces to a derivation $\Pi'$ of $\Gamma'\vLp \Delta ; \Sigma$ with $\Gamma ' \subseteq \Gamma$, such that $d[\Pi' ]$ $<$ $d[\Pi ]$. 
+\end{lemma}
+
+
+\begin{theorem} (\textbf{Normalization Theorem} for $\mathcal{LE}_{p}$)
+Let $\Pi$ be a derivation of $\Gamma\vLp \Delta ; \Sigma$ in $\mathcal{LE}_p$. Then, $\Pi$ reduces to a normal derivation $\Pi'$ of $\Gamma'\vLp \Delta ; \Sigma$ where $\Gamma ' \subseteq \Gamma$.
+\end{theorem}
