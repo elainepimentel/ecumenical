@@ -1,0 +1,391 @@
+\documentclass{article}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{prftree}
+
+\newcommand{\lei}{$\text{\sffamily{LE}}_{\to}$}
+\newcommand{\stoup}{\emph{stoup}}
+\newcommand{\efc}{$\to_c$-elim}
+\newcommand{\efi}{$\to_i$-elim}
+\newcommand{\ifc}{$\to_c$-int}
+\newcommand{\ifi}{$\to_i$-int}
+\newcommand{\comp}[1]{[\tfrac{#1}{#1}]}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+
+\renewcommand{\qedsymbol}{}
+
+\begin{document}
+
+% The proof is very similar to the proof of normalization of the whole propositional ecumenical logic. I reuse the proof, putting in typewriter style the modified parts.
+
+\section*{Question}
+\subsection*{About $\bot$ and elimination of the intuitionist implication}
+It's not sure if $\bot$ is a constructor of formula. If it's not the case, it's an issue for normalization: as for $\vee_i$ in $\mathcal{LE}_p$, the new rule for \efi{} leads to a permutative reduction. For example, we wanted the derivation
+\[\prftree[r]{\efc{}}{
+    \prftree[r]{\efi{}}{
+      \Gamma\vdash A\to_i B; \Delta}{
+      \Gamma\vdash A; \Delta}{
+      \prftree[r]{\ifc}{
+        \Gamma, B, C\vdash\cdot; \Delta, D}{
+        \Gamma, B\vdash C\to_c D; \Delta}}{
+      \Gamma\vdash C\to_d D; \Delta}}{
+    \Gamma\vdash C; \Delta}{
+    \Gamma, D\vdash \cdot; \Delta}{
+    \Gamma\vdash \cdot; \Delta}
+\]
+to be reduced in
+\[\prftree[r]{\efi{} can't be used here}{
+    \Gamma\vdash A\to_i B; \Delta}{
+    \Gamma\vdash A; \Delta}{
+    \prftree[r]{\efc}{
+      \prftree[r]{\ifc}{
+        \Gamma, B, C\vdash\cdot; \Delta, D}{
+        \Gamma, B\vdash C\to_c D; \Delta}
+      \Gamma, B\vdash C; \Delta}{
+      \Gamma, B, D\vdash\cdot; \Delta}{
+      \Gamma, B\vdash\cdot; \Delta}}{
+    \Gamma\vdash\cdot; \Delta}
+\]
+But this permutative reduction produce a valid derivation only if the formula proved after the elimination rule can be empty.
+
+\section{Normalization}\label{sec:normalization}
+
+The idea for normalization with the stoup follows the usual one for natural deduction systems: show how to \emph{compose} derivations, so to eliminate detours. The presence of \emph{stoups}, however, adds an extra case analysis, since the composition may occur in the \stoup{} or in the classical context.
+
+\subsection{Composition}
+
+\lei{} has two modes of composition: a composition that occurs in the \stoup{} and a composition that occurs in the classical context.
+
+\[\prftree[r]{stoup-composition}{\Gamma\vdash A; \Delta}{\Gamma, A\vdash\Sigma; \Delta}{\Gamma\vdash\Sigma; \Delta}\]
+\[\prftree[r]{context-composition}{\Gamma\vdash \cdot; \Delta, A}{\Gamma, A\vdash\Sigma; \Delta}{\Gamma\vdash\Sigma; \Delta}\]
+
+\subsubsection{Composition in the \stoup{}}
+\texttt{Nothing needs to be changed}
+
+\begin{definition}
+  Let $\pi_1$ be a derivation of $\Gamma\vdash A; \Delta$ and $\pi_2$ be a derivation of $\Gamma, A\vdash B; \Delta$. The \emph{stoup-composition} of $\pi_1$ and $\pi_2$ on $A$, denoted by
+  \[\prftree[noline]{\prftree[noline]{\prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{\pi_1\comp{A}}}{\Gamma\vdash B; \Delta}\]
+  is the derivation $\pi$ of $\Gamma\vdash B; \Delta$ defined inductively on $\pi_2$ as follows.
+
+  \begin{enumerate}
+  \item % {\color{blue} 
+      The last rule applied in $\pi_2$ is dereliction \[\prftree[r]{der}{\prftree[noline]{\pi_2}{\Gamma, A\vdash C; \Delta', C}}{\Gamma, A\vdash B;\Delta', C}\]
+      The following derivation is given by the inductive step \[\prftree[noline]{\pi^*}{\Gamma\vdash C; \Delta', C}\]
+      The resulting derivation $\pi$ is then \[\prftree[r]{der}{\prftree[noline]{\pi^*}{\Gamma\vdash C; \Delta', C}}{\Gamma\vdash B;\Delta', C }\]% }
+  % \item[] \textcolor{darkgray}{The definition for the other dereliction rule is similar.}
+    
+  \item The last rule applied in $\pi_2$ is \efi{} \[\prftree[r]{\efc}{\prftree[noline]{\pi_2^1}{\Gamma, A\vdash B\to_c C; \Delta}}{\prftree[noline]{\pi_2^2}{\Gamma, A\vdash B; \Delta}}{\prftree[noline]{\pi_2^3}{\Gamma, A, C\vdash D; \Delta}}{\Gamma, A\vdash D;\Delta}\]
+    The following derivations are given by the inductive step
+    \[\prftree[noline]{\pi_1^*}{\Gamma\vdash B\to_c C; \Delta}\]
+    \[\prftree[noline]{\pi_2^*}{\Gamma\vdash B; \Delta}\]
+    \[\prftree[noline]{\pi_3^*}{\Gamma, C\vdash D; \Delta}\]
+    The resulting derivation $\pi$ is
+    \[\prftree[r]{\efc}{
+        \prftree[noline]{\pi_1^*}{\Gamma\vdash B\to_c C; \Delta}}{
+        \prftree[noline]{\pi_2^*}{\Gamma\vdash B; \Delta}}{
+        \prftree[noline]{\pi_3^*}{\Gamma, C\vdash D; \Delta}}{
+        \Gamma\vdash D;\Delta}
+    \]
+    % \item The last rule applied in $\pi_2$ is $\ifc$
+  \end{enumerate}
+  All the other cases are similar or simpler
+\end{definition}
+
+\subsubsection{Composition in the \emph{context}}
+
+\texttt{The composition definition for the new dereliction rule is a bit different (it needs the induction hypothesis).}
+
+\begin{definition}
+  Let $\pi_1$ be a derivation of $\Gamma\vdash C; \Delta, A$ and $\pi_2$ be a derivation of $\Gamma, A\vdash B; \Delta$. The \emph{context-composition} of $\pi_1$ and $\pi_2$ on $A$, denoted by
+  \[\prftree[noline]{\prftree[noline]{\prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{\pi_1\comp{A}}}{\Gamma\vdash C; \Delta, B}\]
+  is the derivation $\pi$ of $\Gamma\vdash C; \Delta, B$ defined inductively on $\pi_1$ as follows.
+
+  \begin{enumerate}
+  \item The last rule applied in $\pi_1$ is \ifi{}
+    \[\prftree[r]{\ifi}{
+        \prftree[noline]{
+          \pi_1}{
+          \Gamma, D\vdash E; \Delta, A}}{
+        \Gamma\vdash D\to_i E; \Delta, A}
+    \]
+
+    A derivation $\pi^*$ of $\Gamma, D\vdash E; \Delta, \Sigma$ is given by the inductive step. The resulting derivation $\pi$ is
+    \[\prftree[r]{\ifi}{
+        \prftree[noline]{
+          \pi^*}{
+          \Gamma, D\vdash E; \Delta, B}}{
+        \Gamma\vdash D\to_i E; \Delta, B}
+    \]
+    \ttfamily{}
+  \item[2.] The last rule applied in $\pi_1$ is dereliction
+    \[\prftree[r]{der}{
+        \prftree[noline]{\pi_1}{\Gamma\vdash A; \Delta, A}}{
+        \Gamma\vdash C; \Delta, A}
+    \]
+
+    By the inductive step, a derivation $\pi_1'$ of $\Gamma\vdash A; \Delta, B$ is obtained. The stoup-composition gives a derivation $\pi^* = \pi_1'/\comp{A}/\pi_2$ of $\Gamma\vdash B; \Delta, B$. The derivation $\pi$ is defined as
+    \[\prftree[r]{der}{
+        \prftree[noline]{\pi^*}{\Gamma\vdash B; \Delta, B}}{
+        \Gamma\vdash C; \Delta, B}
+    \]
+    \normalfont{}
+  \end{enumerate}
+  All the other cases are similar or simpler.
+\end{definition}
+
+In what follows, we will adopt a more concise notation for both compositions: $\pi_2/\comp{A}/\pi_1$.
+
+\subsection{Reduction}
+
+\texttt{There is no more elimination of intuitionistic disjunction (because no disjunction) or contraction (due to additive style) but the new rule for the elimination of the intuitionistic implication leads to the same type of detour.}
+
+Derivations in \lei{} may contain \emph{detours}. These detours are of two types: we may introduce a formula by an application of an introduction rule to immediately use it as major premiss of an elimination rule; \ttfamily{}or we may introduce a formula by an application of an introduction rule and use it as major premiss of an elimination rule after several application of \efi{}.\normalfont{} The \emph{reductions} defined in this section are intended, as usual, to eliminate \emph{detours} that may occur in a derivation.
+
+\begin{definition}
+  A \emph{segment} in a derivation $\pi$ is a sequence $A_1, \dots, A_n$ of consecutive formulas in a thread of $\pi$ such that:
+  \begin{itemize}
+  \item $A_1$ is not the consequence of an application of \efi{};
+  \item $A_j$ for $j<n$ is the stoup of the minor premiss of an application of \efi{}; and
+  \item $A_n$ is not the in the stoup of the minor premiss of an application of \efi{}.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}
+  A segment that begins with the consequence of an application of an introduction rule or $W_i$ and ends with an application of the respective elimination rule is called a \emph{maximal segment}. A maximal segment of length 1 is called a \emph{maximal formula}.
+\end{definition}
+
+\begin{definition}
+  Let $\pi$ be a derivation in \lei{}. The degree of $\pi$, $d[\pi]$, is defined as $\max\{d[A]: A \text{ is the end-formula of maximal segment in }\pi\}$, where $\d[A]$ is the \emph{weight} of the formula, defined inductively by
+  \[\begin{array}{l l}
+      d[\bot] = d[p] &= 0\quad p\text{ atomic}\\
+      d[A\to_k B] &= d[A] + d[B] + 1\quad\text{for } k\in\{i, c\}\\
+      d{\neg A} &= d[A] + 1.
+    \end{array}\]
+\end{definition}
+
+\begin{definition}
+  A derivation $\pi$ is called \emph{normal} if and only if $d[\pi]=0$.
+\end{definition}
+
+We will present next all the reduction steps in \lei{}, used in the elimination of maximal segments.
+
+\texttt{With the two redutions for the two implications, their is also reductions for $W_i$ and a permutative one with \efi{}}
+
+\begin{enumerate}
+\item $\to_i$-reduction:
+
+  The derivation
+  \[\prftree[r]{\efi{}}{
+      \prftree[r]{\ifi{}}{
+        \prftree[noline]{\pi_1}{\Gamma, A\vdash B; \Delta}}{
+        \Gamma\vdash A\to_i B; \Delta}}{
+      \prftree[noline]{\pi_2}{\Gamma\vdash A, \Delta}}{
+      \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+      \Gamma\vdash C; \Delta}\]
+  reduces to:
+  \[\prftree[noline]{\prftree[noline]{\prftree[noline]{\prftree[noline]{\prftree[noline]{
+              \pi_2}{
+              \Gamma\vdash A; \Delta}}{
+            \pi_1\comp{A}}}{
+          \Gamma\vdash B; \Delta}}{
+        \pi_3\comp{B}}}{
+      \Gamma\vdash C;\Delta}\]
+
+  The case for negation is simpler.
+\item $\to_c$-reduction:
+
+  The derivation
+  \[\prftree[r]{\efc{}}{
+      \prftree[r]{\ifc{}}{
+        \prftree[noline]{\pi_1}{\Gamma, A\vdash \cdot; \Delta, B}}{
+        \Gamma\vdash A\to_c B; \Delta}}{
+      \prftree[noline]{\pi_2}{\Gamma\vdash A, \Delta}}{
+      \prftree[noline]{\pi_3}{\Gamma, B\vdash \cdot; \Delta}}{
+      \Gamma\vdash \cdot; \Delta}\]
+  reduces to:
+  \[\prftree[noline]{\prftree[noline]{\prftree[noline]{\prftree[noline]{\prftree[noline]{
+              \pi_2}{
+              \Gamma\vdash A; \Delta, B}}{
+            \pi_1\comp{A}}}{
+          \Gamma\vdash \cdot; \Delta, B}}{
+        \pi_3\comp{B}}}{
+      \Gamma\vdash \cdot;\Delta}\]
+  \ttfamily{}
+\item $W_i$-reductions
+  \begin{enumerate}
+  \item $\to_i$-reduction
+
+    The derivation
+    \[\prftree[r]{\efi{}}{
+        \prftree[r]{$W_i$}{
+          \prftree[noline]{\pi_1}{\Gamma\vdash \cdot; \Delta}}{
+          \Gamma\vdash A\to_i B; \Delta}}{
+        \prftree[noline]{\pi_2}{\Gamma\vdash A, \Delta}}{
+        \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+        \Gamma\vdash C; \Delta}\]
+    reduces to
+    \[\prftree[r]{$W_i$}{\prftree[noline]{
+          \pi_1}{
+          \Gamma\vdash\cdot; \Delta}}{
+        \Gamma\vdash C; \Delta}\]
+    
+  \item $\to_C$
+
+    The derivation
+    \[\prftree[r]{\efc{}}{
+        \prftree[r]{$W_i$}{
+          \prftree[noline]{\pi_1}{\Gamma\vdash \cdot; \Delta}}{
+          \Gamma\vdash A\to_c B; \Delta}}{
+        \prftree[noline]{\pi_2}{\Gamma\vdash A, \Delta}}{
+        \prftree[noline]{\pi_3}{\Gamma, B\vdash \cdot; \Delta}}{
+        \Gamma\vdash \cdot; \Delta}\]
+    reduces to:
+    \[\prftree[noline]{\pi_1}{\Gamma\vdash\cdot; \Delta}\]
+
+    The case for negation is similar.
+  \end{enumerate}
+
+\item permutative reduction
+
+  The derivation
+  \[\prftree{
+      \prftree[r]{\efi{}}{
+        \prftree[noline]{\pi_1}{\Gamma\vdash A\to_i B; \Delta}}{
+        \prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{
+        \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+        \Gamma\vdash C; \Delta}}{
+      \Gamma_1\vdash D_1; \Delta}{
+      \dots}{
+      \Gamma_n\vdash D_n; \Delta}{
+      \Gamma\vdash D; \Delta}
+  \]
+  where $C$ is the major premiss of an elimination rule with minor premiss $D_1, \dots, D_n$, reduces to
+  \[\prftree[r]{\efi{}}{
+      \prftree[noline]{\pi_1}{\Gamma\vdash A\to_i B; \Delta}}{
+      \prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{
+      \prftree{
+        \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+        \Gamma_1, B\vdash D_1; \Delta}{
+        \dots}{
+        \Gamma_n, B\vdash D_n; \Delta}{
+        \Gamma, B\vdash D; \Delta}}{
+      \Gamma\vdash D; \Delta}\]
+\end{enumerate}
+\normalfont{}
+
+\subsection{Normalization}
+
+\texttt{The only difference is the adaptation of the second case in the proof of the critical lemma to the new permutative reduction.}
+
+We shall use Pottinger's \emph{critical derivation} strategy to prove the normalization theorem for \lei{}. But before the proof of normalization, we need some definitions ans preparatory lemmas that relate reductions and compositions to the degree of derivations. The proof of the next lemma is obvious.
+
+\begin{lemma}\label{lemma:comp_deg}
+  Let $\pi$ be $\pi_1/\comp{A}/\pi_2$ the composition of derivations $\pi_1$ with $\pi_2$ at junction point $A$. Then, $d[\pi] = \max\{d[\pi_1], d[\pi_2], d[A]\}$.
+\end{lemma}
+
+\begin{lemma}\label{lemma:reduction}
+  If $\pi$ reduces to $\pi'$, then $d[\pi']\leq d[\pi]$
+\end{lemma}
+\begin{proof}
+  Directly from the form of the reductions and Lemma~\ref{lemma:comp_deg}.
+\end{proof}
+
+\begin{definition}
+  A derivation $\pi$ is \emph{critical} if and only if:
+  \begin{itemize}
+  \item $\pi$ ends with an elimination rule $\alpha$;
+  \item The major premiss $A$ of $\alpha$ is the end of a maximal segment;
+  \item $d[\pi]=d[A]$; and
+  \item For every proper subderivation $\pi'$ of $\pi$, $d[\pi']<d[\pi]$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}[Critical Lemma]\label{lemma:critical}
+  Let $\pi$ be a critical derivation of $\Gamma\vdash \Sigma; \Delta$. Then $\pi$ reduces to a derivation $\pi'$ of $\Gamma\vdash\Sigma; \Delta$ such that $d[\pi'] < d[\pi]$.
+\end{lemma}
+\begin{proof}
+  By induction on the length of $\pi$.
+  \begin{itemize}
+  \item Case 1: The major premiss of the last rule applied in $\pi$ is a maximum formula. The results follows directly from the form of the reductions and Lemma~\ref{lemma:reduction}.
+  \item \ttfamily{}Case 2: The major premiss of the last rule applied in $\pi$ is the end formula of maximum segment of length $> 1$.
+    Then, $\pi$ is
+    \[\prftree{
+        \prftree[r]{\efi{}}{
+          \prftree[noline]{\pi_1}{\Gamma\vdash A\to_i B; \Delta}}{
+          \prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{
+          \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+          \Gamma\vdash C; \Delta}}{
+        \Gamma_1\vdash D_1; \Delta}{
+        \dots}{
+        \Gamma_n\vdash D_n; \Delta}{
+        \Gamma\vdash D; \Delta}
+    \]
+    By a permutative reduction, $\pi$ reduces to the following derivation $\pi^*$:
+    \[\prftree[r]{\efi{}}{
+        \prftree[noline]{\pi_1}{\Gamma\vdash A\to_i B; \Delta}}{
+        \prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{
+        \prftree{
+          \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+          \Gamma_1, B\vdash D_1; \Delta}{
+          \dots}{
+          \Gamma_n, B\vdash D_n; \Delta}{
+          \Gamma, B\vdash D; \Delta}}{
+        \Gamma\vdash D; \Delta}\]
+    By Lemma~\ref{lemma:reduction}, $d[\pi^*]\leq d[\pi]$. If $d[\pi^*]<d[\pi]$, then we take $\pi'=\pi^*$.
+    If $d[\pi^*]=d[\pi]$, then the derivations of the second minor premiss has degree $= d[\pi]$.
+    By the induction hypothesis, the derivation
+    \[\prftree{
+        \prftree[noline]{\pi_3}{\Gamma, B\vdash C; \Delta}}{
+        \Gamma_1, B\vdash D_1; \Delta}{
+        \dots}{
+        \Gamma_n, B\vdash D_n; \Delta}{
+        \Gamma, B\vdash D; \Delta}\]
+    reduces to a derivation $\pi_3'$ such that $d[\pi_3']<d[\pi_3]$.
+
+    Let $\pi'$ be:
+    \[\prftree[r]{\efi{}}{
+        \prftree[noline]{\pi_1}{\Gamma\vdash A\to_i B; \Delta}}{
+        \prftree[noline]{\pi_2}{\Gamma\vdash A; \Delta}}{
+        \prftree{\pi_3'}{
+          \Gamma, B\vdash D; \Delta}}{
+        \Gamma\vdash D; \Delta}\]
+
+    We can easily see that $\pi$ reduces to $\pi'$ and that $d[\pi']<d[\pi]$
+  \end{itemize}\normalfont{}
+\end{proof}
+
+\begin{lemma}\label{lemma:main}
+  Let $\pi$ be a derivation of $\Gamma\vdash A; \Delta$ with $d[\pi]>0$.
+  Then, $\pi$ reduces to a derivation $\pi'$ of $\Gamma\vdash A; \Delta$ such that $d[\pi'] < d[\pi]$.
+\end{lemma}
+\begin{proof}
+  By induction on the length of $\pi$.
+  \begin{itemize}
+  \item Case 1: $\pi$ ends with an application of an introduction rule. \\
+    This case follows directly from the induction hypothesis.
+  \item Case 2: $\pi$ ends with an application of an elimination rule. The general form of $\pi$ is:
+    \[\prftree{\pi_1}{\pi_2}{\pi_3}{\Gamma\vdash A; \Delta}\]
+    By the induction hypothesis, $\pi_k$ reduces to a derivation $\pi_k'$ such that $d[\pi_k'] < d[\pi_k]$ ($1 \leq k \leq 3$).\\
+    Let $\pi^*$ be:
+    \[\prftree{\pi_1'}{\pi_2'}{\pi_3'}{\Gamma\vdash A; \Delta}\]
+    By Lemma~\ref{lemma:reduction}, $d[\pi^*]\leq d[\pi]$. If $d[\pi^*]<d[\pi]$, we take $\pi^* = \pi'$. If $d[\pi^*] = d[\pi]$, then $\pi^*$ is a critical derivation and the result follows from Lemma~\ref{lemma:critical}.
+  \end{itemize}
+\end{proof}
+
+\begin{theorem}[\textbf{Normalization Theorem} for \lei{}]
+  Let $\pi$ be a derivation of $\Gamma\vdash A; \Delta$ in \lei{}. Then, $\pi$ reduces to a normal derivation $\pi'$ of $\Gamma\vdash A; \Delta$
+\end{theorem}
+\begin{proof}
+  Directly from Lemma~\ref{lemma:main} by induction on $d[\pi]$.
+\end{proof}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
+
+% LocalWords:  subderivation
