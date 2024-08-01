@@ -21,36 +21,36 @@
 
 % The proof is very similar to the proof of normalization of the whole propositional ecumenical logic. I reuse the proof, putting in typewriter style the modified parts.
 
-\section*{Question}
-\subsection*{About $\bot$ and elimination of the intuitionist implication}
-It's not sure if $\bot$ is a constructor of formula. If it's not the case, it's an issue for normalization: as for $\vee_i$ in $\mathcal{LE}_p$, the new rule for \efi{} leads to a permutative reduction. For example, we wanted the derivation
-\[\prftree[r]{\efc{}}{
-    \prftree[r]{\efi{}}{
-      \Gamma\vdash A\to_i B; \Delta}{
-      \Gamma\vdash A; \Delta}{
-      \prftree[r]{\ifc}{
-        \Gamma, B, C\vdash\cdot; \Delta, D}{
-        \Gamma, B\vdash C\to_c D; \Delta}}{
-      \Gamma\vdash C\to_d D; \Delta}}{
-    \Gamma\vdash C; \Delta}{
-    \Gamma, D\vdash \cdot; \Delta}{
-    \Gamma\vdash \cdot; \Delta}
-\]
-to be reduced in
-\[\prftree[r]{\efi{} can't be used here}{
-    \Gamma\vdash A\to_i B; \Delta}{
-    \Gamma\vdash A; \Delta}{
-    \prftree[r]{\efc}{
-      \prftree[r]{\ifc}{
-        \Gamma, B, C\vdash\cdot; \Delta, D}{
-        \Gamma, B\vdash C\to_c D; \Delta}
-      \Gamma, B\vdash C; \Delta}{
-      \Gamma, B, D\vdash\cdot; \Delta}{
-      \Gamma, B\vdash\cdot; \Delta}}{
-    \Gamma\vdash\cdot; \Delta}
-\]
-But this permutative reduction produce a valid derivation only if the formula proved after the elimination rule can be empty.
-
+%\section*{Question}
+%\subsection*{About $\bot$ and elimination of the intuitionist implication}
+%It's not sure if $\bot$ is a constructor of formula. If it's not the case, it's an issue for normalization: as for $\vee_i$ in $\mathcal{LE}_p$, the new rule for \efi{} leads to a permutative reduction. For example, we wanted the derivation
+%\[\prftree[r]{\efc{}}{
+%    \prftree[r]{\efi{}}{
+%      \Gamma\vdash A\to_i B; \Delta}{
+%      \Gamma\vdash A; \Delta}{
+%      \prftree[r]{\ifc}{
+%        \Gamma, B, C\vdash\cdot; \Delta, D}{
+%        \Gamma, B\vdash C\to_c D; \Delta}}{
+%      \Gamma\vdash C\to_d D; \Delta}}{
+%    \Gamma\vdash C; \Delta}{
+%    \Gamma, D\vdash \cdot; \Delta}{
+%    \Gamma\vdash \cdot; \Delta}
+%\]
+%to be reduced in
+%\[\prftree[r]{\efi{} can't be used here}{
+%    \Gamma\vdash A\to_i B; \Delta}{
+%    \Gamma\vdash A; \Delta}{
+%    \prftree[r]{\efc}{
+%      \prftree[r]{\ifc}{
+%        \Gamma, B, C\vdash\cdot; \Delta, D}{
+%        \Gamma, B\vdash C\to_c D; \Delta}
+%      \Gamma, B\vdash C; \Delta}{
+%      \Gamma, B, D\vdash\cdot; \Delta}{
+%      \Gamma, B\vdash\cdot; \Delta}}{
+%    \Gamma\vdash\cdot; \Delta}
+%\]
+%But this permutative reduction produce a valid derivation only if the formula proved after the elimination rule can be empty.
+%
 \section{Normalization}\label{sec:normalization}
 
 The idea for normalization with the stoup follows the usual one for natural deduction systems: show how to \emph{compose} derivations, so to eliminate detours. The presence of \emph{stoups}, however, adds an extra case analysis, since the composition may occur in the \stoup{} or in the classical context.
