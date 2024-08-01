@@ -45,16 +45,15 @@ In what follows, we shall use the following notation to indicate composition in 
 \end{itemize}
 
 \subsection{Reductions}
-Derivations in $\LEi$ may contain \textit{detours}: we may introduce a formula by an application of an introduction rule to immediately use it as major premiss of an application of an elimination rule. The \textit{reductions} defined in this section are intended, as usual, to eliminate \textit{detours} that may occur in a derivation.
+Derivations in $\LEi$ may contain \emph{detours}. These detours are of two types: we may introduce a formula by an application of an introduction rule to immediately use it as major premiss of an elimination rule; or we may introduce a formula by an application of an introduction rule and use it as major premiss of an elimination rule after several application of $\iimpe$. The \emph{reductions} defined in this section are intended, as usual, to eliminate \emph{detours} that may occur in a derivation.
 
 
 \begin{definition}
-A derivation that begins with with the consequence of an application of an introduction rule to a formulas $A$ or $W_{i}$ and ends with an application of the respective elimination rule is called a {\em maximal segment}, and $A$ is called the {\em maximum formula}.
+A derivation that begins with with the consequence of an application of an introduction rule to a formulas $A$ or $W_{i}$ and ends with an application of the respective elimination rule is called a {\em maximal segment}. A maximal segment of length 1 is called the {\em maximum formula}.
 \end{definition}
 
 \begin{definition}
-Let $\Pi$ be a derivation in $\LEi$. The {\em degree of $\Pi$}, $d[\Pi ]$, is defined as $\max\{d[A]:$ A is the end-formula of maximal segment in $\Pi \}$, where $d[A]$ is the {\em weight} of the formula $A$, defin
-ed inductively by
+Let $\Pi$ be a derivation in $\LEi$. The {\em degree of $\Pi$}, $d[\Pi ]$, is defined as $\max\{d[A]:$ A is the end-formula of maximal segment in $\Pi \}$, where $d[A]$ is the {\em weight} of the formula $A$, defined inductively by
 $$
 \begin{array}{lcl}
 d[\bot]=d[p] &=& 0 \quad p\mbox{ atomic.}\\
@@ -68,7 +67,7 @@ $$
 \begin{definition}
 A derivation $\Pi$ is called {\em normal} if and only if $d[\Pi ] = 0$.
 \end{definition}
-We will present next all the reduction steps in $\mathcal{LE}_{p}$, used in the elimination of maximal segments.
+We will present next all the reduction steps in $\LEi$, used in the elimination of maximal segments.
 \begin{enumerate}
 \item $\to_{i}$-reduction:\\
 
@@ -95,7 +94,8 @@ reduces to:
 
 Observe that the case for negation is similar and simpler.
 
-\item $\to_{c}$-reduction: the derivation
+\item $\to_{c}$-reduction:
+
 The derivation
 \[
 \infer[\cimpe]{\stp{\Gamma}{\cdot}{\Delta}}
@@ -116,6 +116,68 @@ reduces to:
 {\deduce{}
 {\deduce{\stp{\Gamma}{A}{\Delta,B}}{\pi_2}}}}}}}}}
 \]
+
+\item $W_i$-reductions:
+  \begin{enumerate}
+  \item $\iimp$-reduction:
+
+    The derivation
+    \[
+      \infer[\iimpe]{\stp{\Gamma}{C}{\Delta}}
+      {\infer[W_i]{\stp{\Gamma}{A\iimp B}{\Delta}}
+        {\deduce{\stp{\Gamma}{\cdot}{\Delta}}{\pi_1}}&
+        \deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}&
+        \deduce{\stp{\Gamma, B}{C}{\Delta}}{\pi_3}}        
+    \]
+    reduces to:
+    \[
+      \infer[W_i]{\stp{\Gamma}{C}{\Delta}}
+      {\deduce{\stp{\Gamma}{\cdot}{\Delta}}{\pi_1}}
+    \]
+    
+  \item $\cimp$-reduction:
+
+    The derivation
+    \[
+      \infer[\cimpe]{\stp{\Gamma}{\cdot}{\Delta}}
+      {\infer[W_i]{\stp{\Gamma}{A\cimp B}{\Delta}}
+        {\deduce{\stp{\Gamma}{\cdot}{\Delta}}{\pi_1}}&
+        \deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}&
+        \deduce{\stp{\Gamma,B}{\cdot}{\Delta}}{\pi_3}}
+    \]
+    reduces to:
+    \[
+      \deduce{\stp{\Gamma}{\cdot}{\Delta}}{\pi_1}
+    \]
+
+    The case for negation is similar.
+  \end{enumerate}
+
+\item permutative reduction
+
+  The derivation
+  \[
+    \infer{\stp{\Gamma}{D}{\Delta}}
+    {\infer[\iimpe]{\stp{\Gamma}{C}{\Delta}}
+      {\deduce{\stp{\Gamma}{A\iimp B}{\Delta}}
+        {\pi_1}&
+        \deduce{\stp{\Gamma}{A}{\Delta}}{\pi_2}&
+        \deduce{\stp{\Gamma,B}{C}{\Delta}}{\pi_3}}&
+      \stp{\Gamma_1}{D_1}{\Delta}&
+      \cdots&
+      \stp{\Gamma_n}{D_n}{\Delta}}
+  \]
+  where $C$ is the major premiss of an elimination rule with minor premiss $D_1, \dots, D_n$, reduces to:
+  \[\infer[\iimpe]{\stp{\Gamma}{D}{\Delta}}
+    {\deduce{\stp{\Gamma}{A\iimp B}{\Delta}}
+      {\pi_1}&
+      \deduce{\stp{\Gamma}{A}{\Delta}}
+      {\pi_2}&
+      \infer{\stp{\Gamma, B}{D}{\Delta}}{
+        \deduce{\stp{\Gamma, B}{C}{\Delta}}
+        {\pi_3}&
+        \stp{\Gamma_1, B}{D_1}{\Delta}&
+        \dots&
+        \stp{\Gamma_n, B}{D_n}{\Delta}}}
+  \]
 \end{enumerate}
-
-

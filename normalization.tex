@@ -1,38 +1,114 @@
 %!TEX root = Ecumenical-types.tex
 % !TEX spellcheck = en-US
 
-We shall use Pottinger's \textit{critical derivation} strategy ~\cite{Pottinger76} to prove the normalization theorem for $\mathcal{LE}_{p}$. But before the proof of normalization, we need some definitions and preparatory lemmas that relate reductions and composition to the degree of derivations. The proof of the next lemma is obvious.
+We shall use Pottinger's \emph{critical derivation} strategy to prove the normalization theorem for $\LEi$. But before the proof of normalization, we need some definitions ans preparatory lemmas that relate reductions and compositions to the degree of derivations. The proof of the next lemma is obvious.
 
-\begin{lemma}\label{lemma:junction}
-Let $\Pi$ be $\Pi_{1} /[\frac{A}{\cdot ;A}]/\Pi_{2}$, the composition of derivations $\Pi_{1}$ with $\Pi_ {2}$ at junction point $A$. Then, $d[\Pi ] = max\{d[\Pi_{1} ] , d[\Pi_{2} ], d[A]\}$
+\begin{lemma}\label{lemma:comp_deg}
+  Let $\pi$ be $\pi_1/[\tfrac{A}{A}]/\pi_2$ the composition of derivations $\pi_1$ with $\pi_2$ at junction point $A$. Then, $d[\pi] = \max\{d[\pi_1], d[\pi_2], d[A]\}$.
 \end{lemma}
 
-\begin {lemma} \label{lemma:reduction}
-If $\Pi$ reduces to $\Pi'$, then $d[\Pi ] \leq d[\Pi']$.
+\begin{lemma}\label{lemma:reduction}
+  If $\pi$ reduces to $\pi'$, then $d[\pi']\leq d[\pi]$
 \end{lemma}
 \begin{proof}
-Directly from the form of the reductions and Lemma~\ref{lemma:junction}.
+  Directly from the form of the reductions and Lemma~\ref{lemma:comp_deg}.
 \end{proof}
+
 \begin{definition}
-A derivation $\Pi$ is {\em critical} iff:
-\begin{itemize}
-\item $\Pi$ ends with an elimination rule $\alpha$;
-\item The major premiss $A$ of $\alpha$ is the end of maximal segment;
-\item $d[\Pi ]$ = $d[A]$; and
-\item For every proper subderivation $\Pi'$ of $\Pi$, $d[\Pi' ]$ $<$ $d[\Pi ]$.
-\end{itemize}
+  A derivation $\pi$ is \emph{critical} if and only if:
+  \begin{itemize}
+  \item $\pi$ ends with an elimination rule $\alpha$;
+  \item The major premiss $A$ of $\alpha$ is the end of a maximal segment;
+  \item $d[\pi]=d[A]$; and
+  \item For every proper subderivation $\pi'$ of $\pi$, $d[\pi']<d[\pi]$.
+  \end{itemize}
 \end{definition}
 
-\begin{lemma}\label{lemma:critical}
-\textit{(\textbf{Critical Lemma}}): Let $\Pi$ be a critical derivation of $\Gamma\vLp \Delta ; \Sigma$  in $\mathcal{LE}_{p}$. Then, $\Pi$ reduces to a derivation $\Pi'$ of $\Gamma'\vLp\Delta ; \Sigma$ with $\Gamma ' \subseteq \Gamma$, such that $d[\Pi' ]$ $<$ $d[\Pi ]$.
+\begin{lemma}[Critical Lemma]\label{lemma:critical}
+  Let $\pi$ be a critical derivation of $\stp{\Gamma}{\Sigma}{\Delta}$. Then $\pi$ reduces to a derivation $\pi'$ of $\stp{\Gamma}{\Sigma}{\Delta}$ such that $d[\pi'] < d[\pi]$.
 \end{lemma}
+\begin{proof}
+  By induction on the length of $\pi$.
+  \begin{itemize}
+  \item Case 1: The major premiss of the last rule applied in $\pi$ is a maximum formula. The results follows directly from the form of the reductions and Lemma~\ref{lemma:reduction}.
+  \item Case 2: The major premiss of the last rule applied in $\pi$ is the end formula of maximum segment of length $> 1$.
+    Then, $\pi$ is
+    \[\infer{\stp{\Gamma}{D}{\Delta}}
+      {\infer[\iimpe]{\stp{\Gamma}{C}{\Delta}}
+        {\deduce{\stp{\Gamma}{A\iimp B}{\Delta}}
+          {\pi_1}&
+          \deduce{\stp{\Gamma}{A}{\Delta}}
+          {\pi_2}&
+          \deduce{\stp{\Gamma, B}{C}{\Delta}}
+          {\pi_3}}
+        \stp{\Gamma_1}{D_1}{\Delta}&
+        \dots&
+        \stp{\Gamma_n}{D_n}{\Delta}}
+    \]
+    By a permutative reduction, $\pi$ reduces to the following derivation $\pi^*$:
+    \[\infer[\iimpe]{\stp{\Gamma}{D}{\Delta}}
+      {\deduce{\stp{\Gamma}{A\iimp B}{\Delta}}
+        {\pi_1}&
+        \deduce{\stp{\Gamma}{A}{\Delta}}
+        {\pi_2}&
+        \infer{\stp{\Gamma, B}{D}{\Delta}}{
+          \deduce{\stp{\Gamma, B}{C}{\Delta}}
+          {\pi_3}&
+          \stp{\Gamma_1, B}{D_1}{\Delta}&
+          \dots&
+          \stp{\Gamma_n, B}{D_n}{\Delta}}}
+    \]
+    By Lemma~\ref{lemma:reduction}, $d[\pi^*]\leq d[\pi]$. If $d[\pi^*]<d[\pi]$, then we take $\pi'=\pi^*$.
+    If $d[\pi^*]=d[\pi]$, then the derivations of the second minor premiss has degree $= d[\pi]$.
+    By the induction hypothesis, the derivation
+
+    \[\infer{\stp{\Gamma, B}{D}{\Delta}}
+      {\deduce{\stp{\Gamma, B}{C}{\Delta}}
+        {\pi_3}&
+        \stp{\Gamma_1, B}{D_1}{\Delta}&
+        \dots&
+        \stp{\Gamma_n, B}{D_n}{\Delta}}
+    \]
+    reduces to a derivation $\pi_3'$ such that $d[\pi_3']<d[\pi_3]$.
+
+    Let $\pi'$ be:
+    \[\infer[\iimpe]{\stp{\Gamma}{D}{\Delta}}
+      {\deduce{\stp{\Gamma}{A\iimp B}{\Delta}}
+        {\pi_1}&
+        \deduce{\stp{\Gamma}{A}{\Delta}}
+        {\pi_2}&
+        \deduce{\stp{\Gamma, B}{D}{\Delta}}
+        {\pi_3}}
+    \]
+
+    We can easily see that $\pi$ reduces to $\pi'$ and that $d[\pi']<d[\pi]$
+  \end{itemize}
+\end{proof}
 
 \begin{lemma}\label{lemma:main}
-Let $\Pi$ be a derivation of $\Gamma\vLp \Delta ; \Sigma$ with $d[\Pi]>0$.
-Then, $\Pi$ reduces to a derivation $\Pi'$ of $\Gamma'\vLp \Delta ; \Sigma$ with $\Gamma ' \subseteq \Gamma$, such that $d[\Pi' ]$ $<$ $d[\Pi ]$. 
+  Let $\pi$ be a derivation of $\stp{\Gamma}{A}{\Delta}$ with $d[\pi]>0$.
+  Then, $\pi$ reduces to a derivation $\pi'$ of $\stp{\Gamma}{A}{\Delta}$ such that $d[\pi'] < d[\pi]$.
 \end{lemma}
+\begin{proof}
+  By induction on the length of $\pi$.
+  \begin{itemize}
+  \item Case 1: $\pi$ ends with an application of an introduction rule.
+    
+    This case follows directly from the induction hypothesis.
+    
+  \item Case 2: $\pi$ ends with an application of an elimination rule. The general form of $\pi$ is:
+    \[\infer{\stp{\Gamma}{A}{\Delta}}{\pi_1& \pi_2& \pi_3}\]
+    
+    By the induction hypothesis, $\pi_k$ reduces to a derivation $\pi_k'$ such that $d[\pi_k'] < d[\pi_k]$ ($1 \leq k \leq 3$).\\
+    Let $\pi^*$ be:
+    \[\infer{\stp{\Gamma}{A}{\Delta}}{\pi_1'& \pi_2'& \pi_3'}\]
+    By Lemma~\ref{lemma:reduction}, $d[\pi^*]\leq d[\pi]$. If $d[\pi^*]<d[\pi]$, we take $\pi^* = \pi'$. If $d[\pi^*] = d[\pi]$, then $\pi^*$ is a critical derivation and the result follows from Lemma~\ref{lemma:critical}.
+  \end{itemize}
+\end{proof}
 
-
-\begin{theorem} (\textbf{Normalization Theorem} for $\mathcal{LE}_{p}$)
-Let $\Pi$ be a derivation of $\Gamma\vLp \Delta ; \Sigma$ in $\mathcal{LE}_p$. Then, $\Pi$ reduces to a normal derivation $\Pi'$ of $\Gamma'\vLp \Delta ; \Sigma$ where $\Gamma ' \subseteq \Gamma$.
+\begin{theorem}[\textbf{Normalization Theorem} for $\LEi$]
+  Let $\pi$ be a derivation of $\stp{\Gamma}{A}{\Delta}$ in $\LEi$. Then, $\pi$ reduces to a normal derivation $\pi'$ of $\stp{\Gamma}{A}{\Delta}$
 \end{theorem}
+\begin{proof}
+  Directly from Lemma~\ref{lemma:main} by induction on $d[\pi]$.
+\end{proof}
