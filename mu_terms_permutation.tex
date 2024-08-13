@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,amscd,amsthm}
+\usepackage[english]{babel}
+
+\input{prooftree.tex}
+\input{macros.sty}
+
+\begin{document}
+
+In  $\lambda$-calculus with generalized application, the permutative reduction rule is defined by
+\[\appi{\appi{t}{s}{x}{r}}{s'}{x'}{r'} \mapsto_\pi \appi{t}{s}{x}{\appi{r}{s'}{x'}{r'}}\]
+
+This rule can be used in the $\lambdamulep$-calculus, but we need an other rule when the outer application is classical: we want a rule of the form
+\[\appc{\appi{t}{s}{x}{r}}{s'}{x'}{c} \mapsto_\pi \appc{t}{s}{x}{\appc{r}{s'}{x'}{c}}\footnote{the intuitionistic application becomes a classical one beacause $\appc{r}{s'}{x'}{c}$ is a command, so an intuitionistic application would not be a correct term}\]
+
+However, if the term on the left can be typed, which means the type of $t$ is an intuitionistic implication, the term to the right can't, since a classical application can only be typed if the term on the right has a classical implication type.
+
+This is why we thought to change the elimination of the intuitionistic application typing rule in
+\[
+  \indrule{E-$\iimp$}{
+    \judgE{\ctx}{\tm}{\typ \iimp \typtwo}{\stoup}
+    \HS
+    \judgE{\ctx}{\tmtwo}{\typ}{\stoup}
+    \HS
+    \judgE{\ctx, \var : \typtwo}{\tmthree}{\typthree}{\stoup}
+  }{
+    \judgE{\ctx}{\tm\,\{\tmtwo, \var.\tmthree\}}{\typthree}{\stoup}
+  }
+\]
+with $\tmthree$ and $\typthree$ being a term, respectively a type, when $\{\}$ is $()$ and a command, respectively $\bot$, when $\{\}$ is $[\,]$
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
