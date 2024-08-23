@@ -1,0 +1,157 @@
+
+\texttt{Note: in this section, I forget the reduction of $\appc{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}$}
+
+\begin{lemma}[Substitution of variables]\label{lemma:subst_var}
+  If $\Gamma, x:A\vdash s:B; \Delta$ and $\Gamma\vdash t:A; \Delta$, then $\Gamma\vdash s[t/x]: B; \Delta$
+\end{lemma}
+\begin{proof}
+  By induction of $\Gamma, x:A\vdash s:B; \Delta$
+\end{proof}
+
+\begin{lemma}[Substitution of named terms]\label{lemma:subst_named}
+  If $\Gamma\vdash c:\bot; \Delta$ and $\Gamma\vdash t:A; \Delta; \alpha:B$ then $\Gamma\vdash t[c/[\alpha] u]:A; \Delta$
+\end{lemma}
+\begin{proof}
+  By induction on $\Gamma\vdash t:A; \Delta$
+\end{proof}
+
+\begin{theorem}[Subject reduction]
+  If $t\trd t'$ and $\judgE{\ctx}{\tm}{\typ}{\stoup}$, then $\judgE{\ctx}{\tm'}{\typ}{\stoup}$.
+\end{theorem}
+\begin{proof}
+  Let's prove by induction on $\Gamma\vdash t:A; \Delta$ the proposition: if $t\mapsto t'$ and $\Gamma\vdash t:A; \Delta$, then $\Gamma\vdash t':A; \Delta$
+  \begin{itemize}
+  \item Case 1:
+    \[ \indrule{I-$\iimp$}{
+        \judgE{\ctx,\var:\typtwo}{\tmtwo}{\typthree}{\stoup}
+      }{
+        \judgE{\ctx}{\absi{\var}{\tmtwo}}{\typtwo \iimp \typthree}{\stoup}
+      }\]
+    where $\tm=\absi{\var}{\tmtwo}$ and $\typ = \typtwo\to_i \typthree$
+
+    The only reduction rule that can be applied to $t$ is
+    \[\indrule{}{
+        \tmtwo\rd\tmtwo'
+      }{
+        \absi{\var}{\tmtwo}\rd\absi{\var}{\tmtwo'}
+      }
+    \]
+
+    By induction hypothesis, $\judgE{\ctx,\var:\typtwo}{\tmtwo'}{\typthree}{\stoup}$, and then, by application of \ifil{}, \[\judgE{\ctx}{\absi{\var}{\tmtwo'}}{\typtwo\rd\typthree}{\stoup}\]
+    
+  \item Case 2:
+    \[\indrule{E-$\iimp$}{
+        \judgE{\ctx}{\tmtwo}{\typtwo \iimp \typthree}{\stoup}
+        \HS
+        \judgE{\ctx}{\tmthree}{\typtwo}{\stoup}
+        \HS
+        \judgE{\ctx, \var : \typthree}{\tmfour}{\typ}{\stoup}
+      }{
+        \judgE{\ctx}{\appi{\tmtwo}{\tmthree}{\var}{\tmfour}}{\typ}{\stoup}
+      }\]
+
+    with $\tm=\appi{\tmtwo}{\tmthree}{\var}{\tmfour}$
+
+    Four reduction rules can be applied to $t$:
+    \begin{itemize}
+    \item Case a: $\tm' = \appi{\tmtwo'}{\tmthree'}{\var}{\tmfour'}$ with $\tmtwo\rd^+ \tmtwo'$, $\tmthree\rd^+ r'$ and $\tmfour\rd^+ \tmfour'$ where $\rd^+$ is the reflexive closure of $\rd$ (exactly two of the following are true: $\tmtwo=\tmtwo'$, $\tmthree=\tmthree'$, $\tmfour=\tmfour'$)
+      
+      By induction hypothesis and rule \efil{}, it follows \[\judgE{\ctx}{\appi{\tmtwo'}{\tmthree'}{\var}{\tmfour'}}{\typ}{\stoup}\]
+      
+    \item Case b: $\tmtwo$ is of the form $\absi{\vartwo}{\tmfive}$ and $\tm' = \subst{\tmfour}{\subst{\tmfive}{\tmthree}{\vartwo}}{\var}$
+      
+      $\judgE{\ctx}{\absi{\vartwo}{\tmfive}}{\typtwo\iimp\typthree}{\stoup}$, so, looking at typing rules, it follows \[\judgE{\ctx,\vartwo:\typtwo}{\tmfive}{\typthree}{\stoup}\]
+
+      It follows from Lemma~\ref{lemma:subst_var} that \[\judgE{\ctx}{\subst{\tmfive}{\tmthree}{\vartwo}}{\typthree}{\stoup}\]
+      Then, by Lemma~\ref{lemma:subst_var}, \[\judgE{\ctx}{\tm'}{\typ}{\stoup}\]
+      
+    \item Case c: $\vartwo$ is of the form $\str{\ctm}$ and $\tm'=\str{\ctm}$.
+
+      There is only one rule for typing $\str{\ctm}$, it's $\mathtt{W_i}$, so $\judgE{\ctx}{\ctm}{\bot}{\stoup}$. Applying $\mathtt{W_i}$, it follows \[\judgE{\ctx}{\str{\ctm}}{\typ}{\stoup}\]
+      
+    \item Case d: $\tmtwo$ is of the form $\appi{\tmfive}{\tmsix}{\vartwo}{\tmseven}$ and $\tm'=\appi{\tmfive}{\tmsix}{\vartwo}{\appi{\tmseven}{\tmthree}{\var}{\tmfour}}$
+
+      Looking at the typing rules, it follows that there exist $\typfour$ and $\typfive$ two types such that
+      \[\judgE{\ctx}{\tmfive}{\typfour\iimp\typfive}{\stoup} \quad \judgE{\ctx}{\tmsix}{\typfour}{\stoup} \quad \judgE{\ctx, \vartwo:\typfive}{\tmseven}{\typtwo\iimp\typthree}{\stoup}\]
+
+      With a weakening of hypothesis, it follows
+      \[
+        \indrule{\ifil{}}{
+          \judgE{\ctx, \vartwo:\typfive}{\tmseven}{\typtwo\iimp\typthree}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive}{\tmthree}{\typtwo}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive, \var : \typthree}{\tmfour}{\typ}{\stoup}
+        }{
+          \judgE{\ctx, \vartwo:\typfive}{\appi{\tmseven}{\tmthree}{\var}{\tmfour}}{\typ}{\stoup}}
+      \]
+      Then
+      \[\indrule{\ifil{}}{
+          \judgE{\ctx}{\tmfive}{\typfour\iimp\typfive}{\stoup}
+          \HS
+          \judgE{\ctx}{\tmsix}{\typfour}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive}{\appi{\tmseven}{\tmthree}{\var}{\tmfour}}{\typ}{\stoup}
+        }{
+          \judgE{\ctx}{\appi{\tmfive}{\tmsix}{\vartwo}{\appi{\tmseven}{\tmthree}{\var}{\tmfour}}}{\typ}{\stoup}}
+      \]      
+    \end{itemize}
+    
+  \item Case 3:
+    \[\indrule{E-$\cimp$}{
+        \judgE{\ctx}{\tmtwo}{\typtwo \cimp \typthree}{\stoup}
+        \HS
+        \judgE{\ctx}{\tmthree}{\typtwo}{\stoup}
+        \HS
+        \judgE{\ctx, \var : \typthree}{\ctm}{\bot}{\stoup}
+      }{
+        \judgE{\ctx}{\appc{\tmtwo}{\tmthree}{\var}{\ctm}}{\bot}{\stoup}
+      }
+    \]
+    with $\tm=\appc{\tmtwo}{\tmthree}{\var}{\ctm}$
+    
+    Four reduction rules can be applied to $\tm$:
+    \begin{itemize}
+    \item Case a: $\tm' = \appc{\tmtwo'}{\tmthree'}{\var}{\ctm'}$ with $\tmtwo\rd^+ \tmtwo'$, $\tmthree\rd^+ r'$ and $\ctm\rd^+ \ctm'$ where $\rd^+$ is the reflexive closure of $\rd$ (exactly two of the following are true: $\tmtwo=\tmtwo'$, $\tmthree=\tmthree'$, $\ctm=\ctm'$)
+      
+      By induction hypothesis and rule \efcl{}, it follows \[\judgE{\ctx}{\appc{\tmtwo'}{\tmthree'}{\var}{\ctm'}}{\bot}{\stoup}\]
+
+    \item Case b: $\tmtwo$ is of the form $\absc{\vartwo}{\name}{\ctmtwo}$ and $\tm'=\subst{(\subst{\ctmtwo}{\tmthree}{\vartwo})}{\subst{\ctm}{\tmfour}{\var}}{\command{\name}{\tmfour}}$
+
+      $\judgE{\ctx}{\absc{\vartwo}{\name}{\ctmtwo}}{\typtwo\cimp\typthree}{\stoup}$, so, looking at typing rules, it follows, \[\judgE{\ctx, \vartwo:\typtwo}{\ctmtwo}{\bot}{\stoup, \name:\typthree}\]
+
+      From Lemma~\ref{lemma:subst_var} and~\ref{lemma:subst_named}, it follows \[\judgE{\ctx}{\subst{(\subst{\ctmtwo}{\tmthree}{\vartwo})}{\subst{\ctm}{\tmfour}{\var}}{\command{\name}{\tmfour}}}{\bot}{\stoup}\]
+    \item Case c: $\tmtwo$ is of the form $\str{\ctm}$ and $t'=\ctm$;
+
+      There is only one rule for typing $\str{\ctm}$, it's $\mathtt{W_i}$, so \[\judgE{\ctx}{\ctm}{\bot}{\stoup}\]
+
+    \item Case d: $\tmtwo$ is of the form $\appi{\tmfour}{\tmfive}{\vartwo}{\tmsix}$ and $\tm'=\appc{\tmfour}{\tmfive}{\vartwo}{\appc{\tmsix}{\tmthree}{\var}{\ctm}}$
+
+      Looking at the typing rules, it follows that there exist $\typfour$ and $\typfive$ two types such that
+      \[\judgE{\ctx}{\tmfour}{\typfour\iimp\typfive}{\stoup} \quad \judgE{\ctx}{\tmfive}{\typfour}{\stoup} \quad \judgE{\ctx, \vartwo:\typfive}{\tmsix}{\typtwo\cimp\typthree}{\stoup}\]
+
+      With a weakening of hypothesis, it follows
+      \[
+        \indrule{\ifcl{}}{
+          \judgE{\ctx, \vartwo:\typfive}{\tmsix}{\typtwo\cimp\typthree}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive}{\tmthree}{\typtwo}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive, \var : \typthree}{\ctm}{\bot}{\stoup}
+        }{
+          \judgE{\ctx, \vartwo:\typfive}{\appc{\tmsix}{\tmthree}{\var}{\ctm}}{\bot}{\stoup}}
+      \]
+      Then
+      \[\indrule{\ifil{}}{
+          \judgE{\ctx}{\tmfour}{\typfour\iimp\typfive}{\stoup}
+          \HS
+          \judgE{\ctx}{\tmfive}{\typfour}{\stoup}
+          \HS
+          \judgE{\ctx, \vartwo:\typfive}{\appc{\tmsix}{\tmthree}{\var}{\ctm}}{\bot}{\stoup}
+        }{
+          \judgE{\ctx}{\appc{\tmfour}{\tmfive}{\vartwo}{\appc{\tmsix}{\tmthree}{\var}{\ctm}}}{\bot}{\stoup}}
+      \]
+    \end{itemize}
+  \end{itemize}
+  Other cases are similar or simpler.
+\end{proof}

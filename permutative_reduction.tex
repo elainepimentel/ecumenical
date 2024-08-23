@@ -1,0 +1,37 @@
+\subsection{Reductions}
+There is two types of reduction: the $\beta$ reductions which reduce an application of an abstraction and permutative reductions which allows to swap two applications in order to unblock (in the sense of $\beta$ reduction) terms.
+
+We define the $\beta$ reduction by transposing the logical reductions to term calculus.
+
+\begin{definition}[$\beta$ reduction]
+  The basic $\beta$ reduction rules are
+  \begin{eqnarray*}
+    &&\appg{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree} \bbred \subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\\
+    &&\appc{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\ctmtwo} \bbred \subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmtwo}{\vartwo}}{\command{\name}{\tmtwo}}\\
+    &&\appi{\str{\ctm}}{\tm}{\var}{\tmtwo} \bbred \str{\ctm}\\
+    &&\appc{\str{\ctm}}{\tm}{\var}{\ctmtwo} \bbred \ctm
+  \end{eqnarray*}
+
+  The one-step $\beta$ reduction relation (denoted $\bred$) is defined as the compatible closure
+  of this basic reduction relation, and the $\beta$ reduction relation (denoted $\tbred$) as the reflexive
+  and transitive closure of the one-step $\beta$ reduction relation.
+\end{definition}
+We define the permutative reduction by generalizing to classical applications the permutative reduction used, for the intuitionistic case, in~\cite{LambdaJ}.
+
+\begin{definition}[permutative reduction]
+  The basic permutative reduction rules are
+  \begin{eqnarray*}
+    &&\appi{\appi{\tm}{\tmtwo}{\var}{\tmthree}}{\tmfour}{\vartwo}{\tmfive} \bpred \appi{\tm}{\tmtwo}{\var}{\appi{\tmthree}{\tmfour}{\vartwo}{\tmfive}}\\
+    &&\appc{\appi{\tm}{\tmtwo}{\var}{\tmthree}}{\tmfour}{\vartwo}{\ctm} \bpred \appc{\tm}{\tmtwo}{\var}{\appc{\tmthree}{\tmfour}{\vartwo}{\ctm}}
+  \end{eqnarray*}
+
+  The one-step permutative reduction relation (denoted $\pred$) is defined as the compatible closure
+  of this basic reduction relation, and the permutative reduction relation (denoted $\tpred$) as the reflexive
+  and transitive closure of the one-step permutative reduction relation.
+\end{definition}
+
+\begin{definition}[reduction]
+  The one-step reduction relation (denoted $\rd$) is defined as the union of the one-step $\beta$ reduction
+  relation and the one-step permutative reduction relation, and the reduction relation (denoted $\trd$) as the reflexive
+  and transitive closure of the one-step reduction relation.
+\end{definition}

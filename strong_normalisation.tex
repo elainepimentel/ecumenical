@@ -1,0 +1,225 @@
+The proof for strong normalisation is inpired from the proof of strong normalization of $\Lambda J$ presented in~\cite{LambdaJ}
+
+We use the notation $\tm\,\overrightarrow{S}$ for $\tm\,S_1\,\dots\,S_n$ where $S_1,\dots,S_{n-1}$ are intuitionistic generalized arguments ($(\tmtwo,\var.\tmthree)$) and $S_n$ is a classical or intuitionistic generalized argument.
+
+We note $\sn$ the set of strongly normalising terms.
+
+\begin{definition}
+  The set $\isn$ is defined inductively by the following rules:
+  \[\infer[\snvar]{\var\in\isn}{}
+    \HS
+    \infer[\snname]{
+      \command{\name}{\tm}
+    }{
+      \tm\in\isn
+    }
+  \]
+  \[\infer[\snabs_i]{
+      \absi{\var}{\tm}\in\isn
+    }{
+      \tm\in\isn
+    }
+    \HS
+    \infer[\snabs_c]{
+      \absc{\var}{\name}{\ctm}\in\isn
+    }{
+      \ctm\in\isn
+    }
+    \HS
+    \infer[\sncmd]{
+      \#\ctm\in\isn
+    }{
+      \ctm\in\isn
+    }
+  \]
+  \[
+    \infer[\snapp_i]{
+      \appi{\var}{\tm}{\vartwo}{\tmtwo}\in\isn
+    }{
+      \tm,\tmtwo\in\isn
+    }
+    \HS
+    \infer[\snapp_c]{
+      \appc{\var}{\tm}{\vartwo}{\ctm}\in\isn
+    }{
+      \tm, \ctm\in\isn
+    }
+  \]
+  \[\infer[\snbeta_{ii}]{
+      \appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}\,\overrightarrow{U}\in\isn
+    }{
+      \subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\,\overrightarrow{U}\in\isn&
+      \tm,\tmtwo\in\isn
+    }
+    \HS
+    \infer[\snbeta_{ic}]{
+      \appc{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}\in\isn
+    }{
+      \subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\in\isn&
+      \tm,\tmtwo\in\isn
+    }
+  \]
+  \[\infer[\snbeta_{cc}]{
+      \appc{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\ctmtwo}\in\isn
+    }{
+      \subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}\in\isn&
+      \forall\command{\name}{\tmthree}\subset\ctm, \tmthree\in\isn&
+      \tm, \ctmtwo\in\isn
+    }
+    \HS
+    \infer[\snbeta_{ci}]{
+      \appi{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\tmtwo}\in\isn
+    }{
+      \ctm,\tm,\tmtwo\in\isn
+    }
+  \]
+  \[\infer[\snefq_i]{
+      \appi{\str{\ctm}}{\tm}{\var}{\tmtwo}\,\overrightarrow{R}\in\isn
+    }{
+      \str{\ctm}\,\overrightarrow{R}\in\isn&
+      \tm,\tmtwo\in\isn
+    }
+    \HS
+    \infer[\snefq_c]{
+      \appc{\str{\ctm}}{\tm}{\var}{\ctmtwo}\in\isn
+    }{
+      \ctm\in\isn&
+      \tm,\ctmtwo\in\isn
+    }
+  \]
+  \[\infer[\snpi_i]{
+      \appi{\appi{\var}{\tm}{\vartwo}{\tmtwo}}{\tmfour}{\varthree}{\tmfive}\,\overrightarrow{R}\in\isn
+    }{
+      \appi{\var}{\tm}{\vartwo}{\appi{\tmtwo}{\tmfour}{\varthree}{\tmfive}}\,\overrightarrow{R}\in\isn
+    }
+    \HS
+    \infer[\snpi_c]{
+      \appc{\appi{\var}{\tm}{\vartwo}{\tmtwo}}{\tmfour}{\varthree}{\tmfive}\in\isn
+    }{
+      \appc{\var}{\tm}{\vartwo}{\appc{\tmtwo}{\tmfour}{\varthree}{\tmfive}}\in\isn
+    }
+  \]
+\end{definition}
+
+\begin{lemma}
+  $\isn=\sn$
+\end{lemma}
+\begin{proof}
+  \begin{description}
+  \item[soundness] To prove $\isn\subseteq\sn$, we show that $\sn$ has all the rules of $\isn$
+    \begin{description}
+    \item[$\snvar$] All variables are in normal form.
+    \item[$\snname$] Each reduction in $\command{\name}{\ctm}$ occurs in $\ctm$, which is in $\sn$ by hypothesis.
+
+      The same reasoning is used for $\sncmd$, both $\snabs$, both $\snapp$, ans $\snbeta_{ci}$.
+    \item[$\snbeta_{ii}$] Prove $\subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\,\overrightarrow{U}, \tm, \tmtwo\in\sn
+      \implies \appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}\,\overrightarrow{U}\in\sn$ by induction on $\tm\in\sn$, side
+      induction on $\tmtwo\in\sn$, side side induction on
+      $\subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\,\overrightarrow{U}\in\sn$ and third side induction on size of
+      $\overrightarrow{U}$
+
+      Let see all the reductions of $\appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}$:
+      \begin{description}
+      \item[$\subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\,\overrightarrow{U}$] By hypothesis, this is in $\sn$
+      \item[$\appi{\absi{\var}{\tm'}}{\tmtwo}{\vartwo}{\tmthree}\,\overrightarrow{U}$] By induction hypothesis on $\tm$
+      \item[$\appi{\absi{\var}{\tm}}{\tmtwo'}{\vartwo}{\tmthree}\,\overrightarrow{U}$] By induction hypothesis on $\tmtwo$
+      \item[$\appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree'}\,\overrightarrow{U}$] By induction hypothesis on $\subst{\tmthree}{\subst{\tm}{\tmtwo}{\var}}{\vartwo}\,\overrightarrow{U}\in\sn$
+      \item[$\appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree}\,\overrightarrow{U'}$] Same reasoning
+      \item[$\appi{\absi{\var}{\tm}}{\tmtwo}{\vartwo}{\tmthree\, V}\,\overrightarrow{V'}$] with $V\,\overrightarrow{V}=\overrightarrow{U}$ By induction hypothesis on length of $\overrightarrow{U}$
+      \end{description}
+      The proofs for $\snefq_i$ and $\snbeta_{ic}$ are similar.
+    \item[$\snbeta_{cc}$] Prove $\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}\in\sn
+      \implies \appc{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\ctmtwo}\in\sn$ by induction on $\tm\in\sn$, side
+      induction on $\ctmtwo\in\sn$, side side induction on
+      $\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}\in\sn$ and third side inductions on
+      $\tmthree\in\sn$ for each $\tmthree$ such that $\command{\name}{\tmthree}\subseteq\ctm$
+
+      Let see all the reductions of $\appc{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\ctmtwo}$:
+      \begin{description}
+      \item[$\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}$] By hypothesis, this is in $\sn$
+      \item[$\appc{\absc{\var}{\name}{\ctm}}{\tm'}{\vartwo}{\ctmtwo}$] By induction hypothesis on $\tm$
+      \item[$\appc{\absc{\var}{\name}{\ctm}}{\tm}{\vartwo}{\ctmtwo'}$] By induction hypothesis on $\ctmtwo$
+      \item[$\appc{\absc{\var}{\name}{\ctm'}}{\tm}{\vartwo}{\ctmtwo}$] Two cases, depending on where in $\ctm$ the reduction appears (under an $\name$ name or not)
+        \begin{itemize}
+        \item If $\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}} \rd \subst{\subst{\ctm'}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}$, the induction hypothesis on $\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}\in\sn$ conludes
+        \item If $\subst{\subst{\ctm}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}} = \subst{\subst{\ctm'}{\tm}{\var}}{\subst{\ctmtwo}{\tmthree}{\vartwo}}{\command{\name}{\tmthree}}$, the induction hypotheses on $\tmthree\in\sn$ for each $\tmthree$ such that $\command{\name}{\tmthree}\subseteq\ctm$ conclude
+        \end{itemize}
+      \end{description}
+      The proof for $\snefq_c$ is simpler.
+    \end{description}
+  \item[completeness] \texttt{Not done, and not necessary, although it makes the next lemma easier to prove}
+  \end{description}
+\end{proof}
+
+\begin{lemma}\label{generalized_snpi_i}
+  $\appi{\tm}{\tmtwo}{\var}{\tmthree\,U}\,\overrightarrow{U}\in\isn\implies\appi{\tm}{\tmtwo}{\var}{\tmthree}\,U\,\overrightarrow{U}\in\isn$ (with $x\notin FV(U)$)
+\end{lemma}
+\begin{proof}
+  By induction on $\appi{\tm}{\tmtwo}{\var}{\tmthree\,U}\,\overrightarrow{U}\in\isn$, distinguishing cases on the shape of $t$. Five cases are possible:
+  \begin{itemize}
+  \item If $\tm=\vartwo$ (and $\overrightarrow{U}$ is empty), the rule used is $\snapp_i$. The result follows from an application pf $\snpi_i$
+  \item If $\tm=\absi{\vartwo}{\tmfive}$, the rule used is $\snbeta_{ii}$
+
+    By induction hypotheses and application of $\snbeta_{ii}$, remarking $\subst{r\,U}{\subst{\tmfive}{\tmtwo}{\vartwo}}{\var} = \subst{r}{\subst{\tmfive}{\tmtwo}{\vartwo}}{\var}\,U$
+  \item If $\tm=\absc{\vartwo}{\name}{ctm}$, the rule used is $\snbeta_{ci}$
+
+    \texttt{Not done}
+  \item If $\tm=\appi{\varthree}{\tmfive}{\vartwo}{\tmsix}$, the rule used is $\snpi_i$. The proof is the same as the one in~\cite{LambdaJ}, except the last generalized application can be classical (and then proved by $\snpi_c$ and not $\snpi_i$)
+  \item If $\tm=\str{c}$, the rule used is $\snefq_i$
+
+    By induction hypothesis, $\str{c}\,\overrightarrow{U}, \tmtwo, \tmthree\,U\in\isn$. Let's write $U=(\tmfive, \vartwo.\tmsix)$
+
+    \texttt{If one ca prove $\tmfive, \tmsix\in\isn$, then two applications of $\snefq_i$ conclude. If completeness of $\isn$ is shown, the fact that an infinte reduction in $\tmfive$ or $\tmsix$ give an infinite reduction in $r\,U$ prove the result.}
+  \end{itemize}
+\end{proof}
+
+\begin{lemma}\label{generalized_snpi_c}
+  $\appc{\tm}{\tmtwo}{\var}{\tmthree\,U}\in\isn\implies\appi{\tm}{\tmtwo}{\var}{\tmthree}\,U\in\isn$
+\end{lemma}
+\begin{proof}
+  By induction on $\appc{\tm}{\tmtwo}{\var}{\tmthree\,U}\in\isn$, distinguishing cases on the shape of $t$. Five cases are possible:
+  \begin{itemize}
+  \item If $\tm=\vartwo$, the rule used is $\snapp_c$. The result follows from an application pf $\snpi_c$
+  \item If $\tm=\absi{\vartwo}{\tmfive}$, the rule used is one of the two $\snbeta_{ic}$
+
+    By induction hypotheses and application of $\snbeta_{ii}$, remarking $\subst{r\,U}{\subst{\tmfive}{\tmtwo}{\vartwo}}{\var} = \subst{r}{\subst{\tmfive}{\tmtwo}{\vartwo}}{\var}\,U$
+  \item If $\tm=\absc{\vartwo}{\name}{\ctm}$, the rule used is $\snbeta_{cc}$
+
+    \texttt{Not done}
+  \item If $\tm=\appi{\varthree}{\tmfive}{\vartwo}{\tmsix}$, the rule used is $\snpi_c$.
+
+    The hypotheses of $\snpi_c$ needs $\appc{\tmsix}{\tmtwo}{\var}{\tmthree\,U}\in\isn$ to be proven. By induction hypothesis, $\appc{\tmsix}{\tmtwo}{\var}{\tmthree}\,U\in\isn$. Then we conclude by an application of $\snpi_c$
+  \item If $\tm=\str{c}$, the rule used is $\snefq_c$
+
+    By induction hypothesis, $\ctm, \tmtwo, tmthree\,U\in\isn$. Let's write $U=(\tmfive, \vartwo.\tmsix)$
+
+    \texttt{Same problem than previous lemma}
+  \end{itemize}
+\end{proof}
+
+In the following, all used terms are assumed to be typable
+
+\begin{lemma}
+  For all type $\typ$, for all $\tm\in\isn$ ($\tm$ can be both a term or a command)
+  \begin{enumerate}
+  \item if $\tm:\typ=\typtwo\iimp\typthree$ and $\tmtwo, \tmthree, \ctm\in\isn$, then $\appi{\tm}{\tmtwo}{\var}{\tmthree}, \appc{\tm}{\tmtwo}{\var}{\ctm}\in\isn$
+  \item if $\tm:\typ=\typtwo\cimp\typthree$ and $\tmtwo, \ctm\in\isn$, then $\appc{\tm}{\tmtwo}{\var}{\ctm}\in\isn$
+  \item if $\tmtwo:\typ\in\isn$, then $\subst{\tm}{\tmtwo}{\var}\in\isn$
+  \item if $\ctm\in\isn$, then $\subst{\tm}{\ctm}{\command{\name}{\tmfour}}\in\isn$
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  By induction on $\typ$ and side induction on $\tm\in\isn$, distinguishing cases according to $\tm\in\isn$.
+  \begin{itemize}
+  \item Case $\snvar$ only needs both $\snapp$ for 1.\ and 2., asssumption and $\snvar$ for 3.\ and assumption for 4.
+  \item Case $\snname$ only needs induction hypothesis on $\tm\in\sn$ for 3.\ and the same hypothesis and the assumption for 4.
+  \item Case $\snpi_i$ only needs induction hypothesis and $\snpi_i$ for 1.\ and 2.\ and the induction hypothesis and Lemma~\ref{generalzed_snpi_i} for 3.
+  \item Case $\snpi_c$ only needs the induction hypothesis and Lemma~\ref{generalzed_snpi_c} for 3.\ and induction hypothesis for 4.
+  \item The four cases $\snbeta$ and both cases $\snefq$ only need the induction hypothesis, $\snbeta$ and $\snefq$
+  \item \texttt{This proof isn't finished}
+  \end{itemize}
+\end{proof}
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "permutative"
+%%% End:
